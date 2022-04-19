@@ -1,5 +1,5 @@
 import React from "react";
-import { CollectionSize, Entity, EntityCollection } from "../../../models";
+import { CollectionSize, Entity, EntityCollection, EntityCollectionResolver, EntitySchemaResolver } from "../../../models";
 /**
  * @category Collection components
  */
@@ -20,7 +20,11 @@ export interface CollectionTableProps<M extends {
     /**
      * Collection
      */
-    collection: EntityCollection<M>;
+    collection: EntityCollection<M> | EntityCollectionResolver<M>;
+    /**
+     * Use to resolve the schema properties for specific path, entity id or values
+     */
+    schemaResolver: EntitySchemaResolver<M>;
     /**
      * Override the title in the toolbar
      */

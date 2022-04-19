@@ -129,21 +129,22 @@ export declare type Properties<M extends {
 /**
  * @category Entity properties
  */
-export declare type PropertyBuilderProps<T, M extends {
+export declare type PropertyBuilderProps<M extends {
     [Key: string]: any;
 }> = {
     values: Partial<M>;
+    previousValues?: Partial<M>;
     path: string;
     entityId?: string;
 };
 /**
  * @category Entity properties
  */
-export declare type PropertyBuilder<T extends CMSType, M> = ({ values, path, entityId }: PropertyBuilderProps<T, M>) => Property<T>;
+export declare type PropertyBuilder<T extends CMSType = CMSType, M = any> = ({ values, previousValues, path, entityId }: PropertyBuilderProps<M>) => Property<T> | null;
 /**
  * @category Entity properties
  */
-export declare type PropertyOrBuilder<T extends CMSType, M> = Property<T> | PropertyBuilder<T, M>;
+export declare type PropertyOrBuilder<T extends CMSType = CMSType, M = any> = Property<T> | PropertyBuilder<T, M>;
 /**
  * @category Entity properties
  */
@@ -318,8 +319,11 @@ export interface ReferenceProperty<M extends {
      * The schema of the entity is inferred based on the root navigation, so
      * the filters and search delegate existing there are applied to this view
      * as well.
+     * You can set this prop to `false` if the path is not yet know, e.g.
+     * you are using a property builder and the path depends on a different
+     * property.
      */
-    path: string;
+    path: string | false;
     /**
      * Properties that need to be rendered when displaying a preview of this
      * reference. If not specified the first 3 are used. Only the first 3
@@ -380,6 +384,10 @@ export interface StringPropertyValidationSchema extends PropertyValidationSchema
     min?: number;
     max?: number;
     matches?: RegExp;
+    /**
+     * Message displayed when the input does not satisfy the regex in `matches`
+     */
+    matchesMessage?: string;
     email?: boolean;
     url?: boolean;
     trim?: boolean;

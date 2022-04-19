@@ -1,9 +1,13 @@
-import { SchemaConfig } from "./schema_resolver";
+import { EntityCollection } from "./collections";
+import { EntitySchema, EntitySchemaResolver } from "./entities";
+import { EntityCallbacks } from "./entity_callbacks";
+import { PermissionsBuilder } from "./permissions";
+import { User } from "./user";
 /**
  * Props used to open a side dialog
  * @category Hooks and utilities
  */
-export interface SideEntityPanelProps {
+export interface SideEntityPanelProps<M = any, UserType = User> {
     /**
      * Absolute path of the entity
      */
@@ -17,7 +21,7 @@ export interface SideEntityPanelProps {
      */
     copy?: boolean;
     /**
-     * Open the entity with a selected subcollection view. If the panel for this
+     * Open the entity with a selected sub-collection view. If the panel for this
      * entity was already open, it is replaced.
      */
     selectedSubpath?: string;
@@ -26,6 +30,26 @@ export interface SideEntityPanelProps {
      * e.g. "600px"
      */
     width?: number | string;
+    /**
+     * Can the elements in this collection be added and edited.
+     */
+    permissions?: PermissionsBuilder<M, UserType>;
+    /**
+     * Schema representing the entities of this view
+     */
+    schema?: EntitySchema<M> | EntitySchemaResolver<M>;
+    /**
+     * You can add subcollections to your entity in the same way you define the root
+     * collections.
+     */
+    subcollections?: EntityCollection[];
+    /**
+     * This interface defines all the callbacks that can be used when an entity
+     * is being created, updated or deleted.
+     * Useful for adding your own logic or blocking the execution of the operation
+     */
+    callbacks?: EntityCallbacks<M>;
+    overrideSchemaRegistry?: boolean;
 }
 /**
  * Controller to open the side dialog displaying entity forms
@@ -47,11 +71,9 @@ export interface SideEntityController {
      * At least you need to pass the path of the entity you would like
      * to edit. You can set an entityId if you would like to edit and existing one
      * (or a new one with that id).
-     * If you wish, you can also override the `SchemaSidePanelProps` and choose
-     * to override the FireCMS level SchemaResolver.
+     * If you wish, you can also override the `SchemaConfig` and choose
+     * to override the FireCMS level `SchemaRegistryController`.
      * @param props
      */
-    open: (props: SideEntityPanelProps & Partial<SchemaConfig> & {
-        overrideSchemaResolver?: boolean;
-    }) => void;
+    open: (props: SideEntityPanelProps) => void;
 }

@@ -3,7 +3,7 @@ import { AuthDelegate } from "../../models";
 /**
  * @category Firebase
  */
-export declare type FirebaseSignInProvider = 'password' | 'anonymous' | 'google.com' | 'facebook.com' | 'github.com' | 'twitter.com' | 'microsoft.com' | 'apple.com';
+export declare type FirebaseSignInProvider = "password" | "anonymous" | "google.com" | "facebook.com" | "github.com" | "twitter.com" | "microsoft.com" | "apple.com";
 /**
  * @category Firebase
  */

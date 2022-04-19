@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ArrayProperty, EntityValues, StorageMeta, StringProperty } from "../../../../../models";
+import { ArrayProperty, EntityValues, StringProperty } from "../../../../../models";
 import { PreviewSize } from "../../../../../preview";
 export declare const useStyles: (props: {
     hasValue: boolean;
@@ -38,22 +38,7 @@ interface StorageFieldItem {
     file?: File;
     fileName?: string;
     metadata?: any;
-    size: PreviewSize;
 }
-interface StorageUploadProps {
-    value: string | string[] | null;
-    name: string;
-    property: StringProperty | ArrayProperty<string[]>;
-    onChange: (value: string | string[] | null) => void;
-    multipleFilesSupported: boolean;
-    autoFocus: boolean;
-    disabled: boolean;
-    previewSize: PreviewSize;
-    storageMeta: StorageMeta;
-    fileNameBuilder: (file: File) => string;
-    storagePathBuilder: (file: File) => string;
-}
-export declare function StorageUpload({ property, name, value, onChange, multipleFilesSupported, previewSize: previewSizeInput, disabled, autoFocus, storageMeta, fileNameBuilder, storagePathBuilder }: StorageUploadProps): import("@emotion/react/jsx-runtime").JSX.Element;
 interface StorageUploadItemProps {
     storagePath: string;
     metadata?: any;
@@ -63,12 +48,11 @@ interface StorageUploadItemProps {
 }
 export declare function StorageUploadProgress({ storagePath, entry, metadata, onFileUploadComplete, size }: StorageUploadItemProps): import("@emotion/react/jsx-runtime").JSX.Element;
 interface StorageItemPreviewProps {
-    name: string;
     property: StringProperty;
     value: string;
     onClear: (value: string) => void;
     size: PreviewSize;
     disabled: boolean;
 }
-export declare function StorageItemPreview({ name, property, value, onClear, disabled, size }: StorageItemPreviewProps): import("@emotion/react/jsx-runtime").JSX.Element;
+export declare function StorageItemPreview({ property, value, size }: StorageItemPreviewProps): import("@emotion/react/jsx-runtime").JSX.Element;
 export {};

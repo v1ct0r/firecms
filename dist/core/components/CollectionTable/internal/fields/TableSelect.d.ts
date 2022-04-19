@@ -1,5 +1,6 @@
 import { EnumValues } from "../../../../../models";
 import React from "react";
+export declare const useInputStyles: (props?: any) => import("@mui/styles").ClassNameMap<string>;
 export declare function TableSelect(props: {
     name: string;
     enumValues: EnumValues;

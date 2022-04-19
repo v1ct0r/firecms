@@ -1,14 +1,17 @@
+import React from "react";
 import { TableColumn, TableSort, TableWhereFilterOp } from "./TableProps";
 export declare const useStyles: (props: {
-    onHover: boolean;
-    align: "right" | "left" | "center";
+    onHover?: boolean | undefined;
+    align?: "left" | "right" | "center" | undefined;
 }) => import("@mui/styles").ClassNameMap<string>;
-export declare function TableHeader<M extends {
+export declare const TableHeader: React.FunctionComponent<TableHeaderProps<any>>;
+declare type TableHeaderProps<M extends {
     [Key: string]: any;
-}>({ sort, onColumnSort, onFilterUpdate, filter, column }: {
+}> = {
     column: TableColumn<M>;
     onColumnSort: (key: Extract<keyof M, string>) => void;
     onFilterUpdate: (filterForProperty?: [TableWhereFilterOp, any]) => void;
     filter?: [TableWhereFilterOp, any];
     sort: TableSort;
-}): import("@emotion/react/jsx-runtime").JSX.Element;
+};
+export {};

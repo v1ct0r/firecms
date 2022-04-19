@@ -1,3 +1,4 @@
+import * as React from "react";
 import { EntityReference } from "../../models";
 import { PreviewComponentProps } from "../internal";
 export declare type ReferencePreviewProps = PreviewComponentProps<EntityReference> & {
@@ -6,4 +7,4 @@ export declare type ReferencePreviewProps = PreviewComponentProps<EntityReferenc
 /**
  * @category Preview components
  */
-export declare function ReferencePreview(props: ReferencePreviewProps): import("@emotion/react/jsx-runtime").JSX.Element;
+export declare const ReferencePreview: React.FunctionComponent<ReferencePreviewProps>;

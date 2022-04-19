@@ -1,3 +1,5 @@
+export { PreviewComponent } from "./PreviewComponent";
+export type { PreviewComponentProps, PreviewSize } from "./PreviewComponentProps";
 export { AsyncPreviewComponent } from "./components/AsyncPreviewComponent";
 export { ArrayOfStringsPreview } from "./components/ArrayOfStringsPreview";
 export { ArrayEnumPreview } from "./components/ArrayEnumPreview";
@@ -21,5 +23,3 @@ export { ArrayOfReferencesPreview } from "./components/ArrayOfReferencesPreview"
 export { MapPreview } from "./components/MapPreview";
 export { ArrayPreview } from "./components/ArrayPreview";
 export { ArrayOneOfPreview } from "./components/ArrayOneOfPreview";
-export { PreviewComponent } from "./PreviewComponent";
-export type { PreviewComponentProps, PreviewSize } from "./PreviewComponentProps";

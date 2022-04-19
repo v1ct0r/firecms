@@ -1,12 +1,10 @@
-import { Entity, EntitySchema, EntityStatus, EntityValues } from "../models";
-export declare const useStyles: (props?: any) => import("@mui/styles").ClassNameMap<"button" | "stickyButtons" | "container" | "form">;
+import { Entity, EntitySchema, EntitySchemaResolver, EntityStatus, EntityValues } from "../models";
+export declare const useStyles: (props?: any) => import("@mui/styles").ClassNameMap<"button" | "form" | "container" | "stickyButtons">;
 /**
  *
  * @category Components
  */
-export interface EntityFormProps<M extends {
-    [Key: string]: any;
-}> {
+export interface EntityFormProps<M> {
     /**
      * New or existing status
      */
@@ -16,9 +14,9 @@ export interface EntityFormProps<M extends {
      */
     path: string;
     /**
-     * Schema of the entity this form represents
+     * Use to resolve the schema properties for specific path, entity id or values
      */
-    schema: EntitySchema<M>;
+    schemaOrResolver: EntitySchema<M> & EntitySchemaResolver<M>;
     /**
      * The updated entity is passed from the parent component when the underlying data
      * has changed in the datasource
@@ -52,7 +50,7 @@ export interface EntityFormProps<M extends {
  * This is the form used internally by the CMS
  * @param status
  * @param path
- * @param schema
+ * @param schemaOrResolver
  * @param entity
  * @param onEntitySave
  * @param onDiscard
@@ -61,5 +59,5 @@ export interface EntityFormProps<M extends {
  * @constructor
  * @category Components
  */
-export declare function EntityForm<M>({ status, path, schema, entity, onEntitySave, onDiscard, onModified, onValuesChanged }: EntityFormProps<M>): import("@emotion/react/jsx-runtime").JSX.Element;
+export declare function EntityForm<M>({ status, path, schemaOrResolver, entity, onEntitySave, onDiscard, onModified, onValuesChanged }: EntityFormProps<M>): import("@emotion/react/jsx-runtime").JSX.Element;
 export default EntityForm;

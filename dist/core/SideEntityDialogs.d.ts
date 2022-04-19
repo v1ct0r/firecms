@@ -6,6 +6,4 @@
  * {@see useSideEntityController}
  * @category Components
  */
-export declare function SideEntityDialogs<M extends {
-    [Key: string]: any;
-}>(): import("@emotion/react/jsx-runtime").JSX.Element;
+export declare function SideEntityDialogs(): import("@emotion/react/jsx-runtime").JSX.Element;

@@ -1,4 +1,4 @@
-import { Entity, EntitySchema, FilterValues } from "../../models";
+import { Entity, EntitySchemaResolver, FilterValues } from "../../models";
 /**
  * @category Hooks and utilities
  */
@@ -12,7 +12,7 @@ export interface CollectionFetchProps<M extends {
     /**
      * Schema of the entity displayed by this collection
      */
-    schema: EntitySchema<M>;
+    schemaResolver: EntitySchemaResolver<M>;
     /**
      * Number of entities to fetch
      */
@@ -49,13 +49,12 @@ export interface CollectionFetchResult<M extends {
 /**
  * This hook is used to fetch collections using a given schema
  * @param path
- * @param schema
- * @param filter
+ * @param schemaResolver
+ * @param filterValues
  * @param sortBy
  * @param itemCount
+ * @param searchString
  * @param entitiesDisplayedFirst
  * @category Hooks and utilities
  */
-export declare function useCollectionFetch<M extends {
-    [Key: string]: any;
-}>({ path, schema, filterValues, sortBy, itemCount, searchString, entitiesDisplayedFirst }: CollectionFetchProps<M>): CollectionFetchResult<M>;
+export declare function useCollectionFetch<M>({ path, schemaResolver, filterValues, sortBy, itemCount, searchString, entitiesDisplayedFirst }: CollectionFetchProps<M>): CollectionFetchResult<M>;

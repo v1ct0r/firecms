@@ -1,5 +1,5 @@
 import { TableWhereFilterOp } from "../TableProps";
-export declare const useStyles: (props?: any) => import("@mui/styles").ClassNameMap<"formControl" | "label">;
+export declare const useStyles: (props?: any) => import("@mui/styles").ClassNameMap<"label" | "formControl">;
 interface BooleanFieldProps {
     name: string;
     value?: [op: TableWhereFilterOp, fieldValue: any];

@@ -1,7 +1,5 @@
-import * as React from "react";
 import { ArrayProperty, FieldProps, StorageMeta, StringProperty } from "../../models";
 import { PreviewSize } from "../../preview";
-export declare const useStyles: (props?: any) => import("@mui/styles").ClassNameMap<"dropZone" | "disabled" | "nonActiveDrop" | "activeDrop" | "acceptDrop" | "rejectDrop" | "uploadItem" | "uploadItemSmall" | "arrayEntry" | "arrayEntryHovered" | "arrayEntryDragging" | "thumbnailCloseIcon">;
 declare type StorageUploadFieldProps = FieldProps<string | string[]>;
 /**
  * Field that allows to upload files to Google Cloud Storage.
@@ -34,21 +32,11 @@ interface StorageUploadProps {
     multipleFilesSupported: boolean;
     autoFocus: boolean;
     disabled: boolean;
-    small: boolean;
     storageMeta: StorageMeta;
     fileNameBuilder: (file: File) => string;
     storagePathBuilder: (file: File) => string;
 }
-export declare function StorageUpload({ property, name, value, onChange, multipleFilesSupported, small, disabled, autoFocus, storageMeta, fileNameBuilder, storagePathBuilder }: StorageUploadProps): import("@emotion/react/jsx-runtime").JSX.Element;
-export declare function StorageEntry({ children, entry, index, moveItem, dragType, hovered, onHover }: {
-    entry: StorageFieldItem;
-    children: React.ReactNode;
-    index: number;
-    dragType: string;
-    moveItem: (dragIndex: number, hoverIndex: number) => void;
-    hovered: boolean;
-    onHover: (index?: number) => void;
-}): import("@emotion/react/jsx-runtime").JSX.Element;
+export declare function StorageUpload({ property, name, value, onChange, multipleFilesSupported, disabled, autoFocus, storageMeta, fileNameBuilder, storagePathBuilder }: StorageUploadProps): import("@emotion/react/jsx-runtime").JSX.Element;
 interface StorageUploadItemProps {
     storagePath: string;
     metadata?: any;

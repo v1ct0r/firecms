@@ -1,5 +1,5 @@
-import { Entity, EntityCollection } from "../../models";
-export declare const useStyles: (props?: any) => import("@mui/styles").ClassNameMap<"dialogBody" | "paper">;
+import { Entity, EntityCollectionResolver } from "../../models";
+export declare const useStyles: (props?: any) => import("@mui/styles").ClassNameMap<"paper" | "dialogBody">;
 /**
  * @category Components
  */
@@ -15,7 +15,7 @@ export interface ReferenceDialogProps {
     /**
      * Entity collection config
      */
-    collection: EntityCollection;
+    collectionResolver: EntityCollectionResolver;
     /**
      * Absolute path of the collection
      */
@@ -50,4 +50,4 @@ export interface ReferenceDialogProps {
  * in a given collection
  * @category Components
  */
-export declare function ReferenceDialog({ onSingleEntitySelected, onMultipleEntitiesSelected, onClose, open, multiselect, collection, path, selectedEntityIds }: ReferenceDialogProps): import("@emotion/react/jsx-runtime").JSX.Element;
+export declare function ReferenceDialog({ onSingleEntitySelected, onMultipleEntitiesSelected, onClose, open, multiselect, collectionResolver, path, selectedEntityIds }: ReferenceDialogProps): import("@emotion/react/jsx-runtime").JSX.Element;

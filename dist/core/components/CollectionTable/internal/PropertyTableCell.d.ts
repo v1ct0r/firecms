@@ -2,9 +2,7 @@ import { CMSType, EntityValues, Property } from "../../../../models";
 import React from "react";
 import { CellStyleProps } from "../../Table/styles";
 import { AnySchema } from "yup";
-export interface PropertyTableCellProps<T extends CMSType, M extends {
-    [Key: string]: any;
-}> {
+export interface PropertyTableCellProps<T extends CMSType> {
     name: string;
     selected: boolean;
     value: T;
@@ -30,4 +28,4 @@ export interface OnCellChangeParams<T> {
     setError: (e: Error) => void;
     setSaved: (saved: boolean) => void;
 }
-export declare const PropertyTableCell: React.FunctionComponent<PropertyTableCellProps<any, any> & CellStyleProps>;
+export declare const PropertyTableCell: React.FunctionComponent<PropertyTableCellProps<any> & CellStyleProps>;

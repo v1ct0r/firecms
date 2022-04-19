@@ -29,13 +29,13 @@ export declare function useSelectionController<M = any>(): SelectionController;
  * exclusively with config options.
  *
  * If you need a lower level implementation with more granular options, you
- * can try {@link CollectionTable}.
+ * can use {@link CollectionTable}.
  *
  * If you need a table that is not bound to the datasource or entities and
  * properties at all, you can check {@link Table}
  *
  * @param path
- * @param collectionConfig
+ * @param collection
  * @constructor
  * @category Components
  */

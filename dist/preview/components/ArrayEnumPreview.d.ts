@@ -1,4 +1,5 @@
 import { EnumValues } from "../../models";
+export declare const useStyles: (props?: any) => import("@mui/styles").ClassNameMap<"arrayWrap" | "arrayItem">;
 /**
  * @category Preview components
  */

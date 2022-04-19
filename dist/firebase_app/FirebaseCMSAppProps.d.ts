@@ -1,8 +1,9 @@
 import React from "react";
-import { Authenticator, EntityCollection, Locale, Navigation, NavigationBuilder, SchemaResolver } from "../models";
+import { Authenticator, EntityCollection, Locale, Navigation, NavigationBuilder, SchemaOverrideHandler } from "../models";
 import { FirestoreTextSearchController } from "./models/text_search";
 import { User as FirebaseUser } from "firebase/auth";
 import { FirebaseSignInOption, FirebaseSignInProvider } from "./models/auth";
+import { FirebaseLoginViewProps } from "./components/FirebaseLoginView";
 /**
  * Main entry point that defines the CMS configuration
  * @category Firebase
@@ -20,7 +21,7 @@ export interface FirebaseCMSAppProps {
      * Use this prop to specify the views that will be generated in the CMS.
      * You usually will want to create a `Navigation` object that includes
      * collection views where you specify the path and the schema.
-     * Additionally you can add custom views to the root navigation.
+     * Additionally, you can add custom views to the root navigation.
      * In you need to customize the navigation based on the logged user you
      * can use a `NavigationBuilder`
      */
@@ -35,9 +36,10 @@ export interface FirebaseCMSAppProps {
     authentication?: boolean | Authenticator<FirebaseUser>;
     /**
      * List of sign in options that will be displayed in the login
-     * view if `authentication` is enabled. You can pass google providers strings,
-     * such as `firebase.auth.GoogleAuthProvider.PROVIDER_ID` or full configuration
-     * objects such as specified in https://firebase.google.com/docs/auth/web/firebaseui
+     * view if `authentication` is enabled. You can pass Firebase providers strings,
+     * such as `firebase.auth.GoogleAuthProvider.PROVIDER_ID` or include addtional
+     * config such as scopes or custom parameters
+     * {@see FirebaseSignInOption}
      * Defaults to Google sign in only.
      */
     signInOptions?: Array<FirebaseSignInProvider | FirebaseSignInOption>;
@@ -91,7 +93,7 @@ export interface FirebaseCMSAppProps {
      *
      * You can also override schemas in place, when using `useSideEntityController`
      */
-    schemaResolver?: SchemaResolver;
+    schemaOverrideHandler?: SchemaOverrideHandler;
     /**
      * Use this controller to return text search results as document ids, that
      * get then fetched from Firestore.
@@ -112,4 +114,10 @@ export interface FirebaseCMSAppProps {
      * Default path under the collection routes of the CMS will be created
      */
     baseCollectionPath?: string;
+    /**
+     * Additional props passed to the login view. You can use this props
+     * to disable registration in `password` mode, or to set up an additional
+     * message.
+     */
+    LoginViewProps?: Partial<FirebaseLoginViewProps>;
 }

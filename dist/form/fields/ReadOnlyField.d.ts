@@ -7,6 +7,4 @@ import { FieldProps } from "../../models";
  * and tables to the specified properties.
  * @category Form fields
  */
-export declare function ReadOnlyField<M extends {
-    [Key: string]: any;
-}>({ name, value, setValue, error, showError, isSubmitting, touched, tableMode, property, includeDescription, context }: FieldProps<any>): import("@emotion/react/jsx-runtime").JSX.Element;
+export declare function ReadOnlyField({ name, value, setValue, error, showError, isSubmitting, touched, tableMode, property, includeDescription, context }: FieldProps<any>): import("@emotion/react/jsx-runtime").JSX.Element;

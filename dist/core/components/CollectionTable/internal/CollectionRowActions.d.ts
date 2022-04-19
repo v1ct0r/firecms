@@ -1,4 +1,5 @@
 import { CollectionSize, Entity } from "../../../../models";
+export declare const useTableStyles: (props?: any) => import("@mui/styles").ClassNameMap<string>;
 /**
  *
  * @param entity
@@ -20,8 +21,8 @@ export declare function CollectionRowActions<M extends {
     size: CollectionSize;
     isSelected?: boolean;
     selectionEnabled?: boolean;
-    toggleEntitySelection?: (entity: Entity<M>) => void;
-    onEditClicked?: (entity: Entity<M>) => void;
-    onCopyClicked?: (entity: Entity<M>) => void;
-    onDeleteClicked?: (entity: Entity<M>) => void;
+    toggleEntitySelection?: (selectedEntity: Entity<M>) => void;
+    onEditClicked?: (selectedEntity: Entity<M>) => void;
+    onCopyClicked?: (selectedEntity: Entity<M>) => void;
+    onDeleteClicked?: (selectedEntity: Entity<M>) => void;
 }): import("@emotion/react/jsx-runtime").JSX.Element;

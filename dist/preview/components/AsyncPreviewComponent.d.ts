@@ -1,8 +1,5 @@
 import * as React from "react";
-import { EntitySchema } from "../../models";
-export interface AsyncPreviewComponentProps<M extends {
-    [Key: string]: any;
-}> {
+export interface AsyncPreviewComponentProps {
     builder: Promise<React.ReactNode>;
 }
 /**
@@ -11,4 +8,4 @@ export interface AsyncPreviewComponentProps<M extends {
  *
  * @category Preview components
  */
-export declare function AsyncPreviewComponent(props: AsyncPreviewComponentProps<EntitySchema>): import("@emotion/react/jsx-runtime").JSX.Element;
+export declare const AsyncPreviewComponent: React.FunctionComponent<AsyncPreviewComponentProps>;

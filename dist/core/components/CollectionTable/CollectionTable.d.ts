@@ -1,3 +1,4 @@
+import React from "react";
 import { User } from "../../../models";
 import { CollectionTableProps } from "./CollectionTableProps";
 export declare const useStyles: (props?: any) => import("@mui/styles").ClassNameMap<string>;
@@ -13,8 +14,8 @@ export declare const useStyles: (props?: any) => import("@mui/styles").ClassName
  * a custom view. If you just need to create a default view you can do it
  * exclusively with config options.
  *
- * If you want to bind a EntityCollection to a table with the default
- * options you see in colelctions in the top level navigation, you can
+ * If you want to bind a {@link EntityCollection} to a table with the default
+ * options you see in collections in the top level navigation, you can
  * check {@link EntityCollectionView}
  *
  * If you need a table that is not bound to the datasource or entities and
@@ -25,6 +26,7 @@ export declare const useStyles: (props?: any) => import("@mui/styles").ClassName
  * @see Table
  * @category Components
  */
-export declare function CollectionTable<M extends {
+export declare const CollectionTable: React.FunctionComponent<CollectionTableProps<any, any>>;
+export declare function CollectionTableInternal<M extends {
     [Key: string]: any;
-}, AdditionalKey extends string = string, UserType = User>({ path, collection, inlineEditing, toolbarActionsBuilder, title, tableRowActionsBuilder, entitiesDisplayedFirst, onEntityClick, onColumnResize, onSizeChanged, hoverRow }: CollectionTableProps<M, AdditionalKey>): import("@emotion/react/jsx-runtime").JSX.Element;
+}, AdditionalKey extends string = string, UserType = User>({ path, collection, schemaResolver, inlineEditing, toolbarActionsBuilder, title, tableRowActionsBuilder, entitiesDisplayedFirst, onEntityClick, onColumnResize, onSizeChanged, hoverRow }: CollectionTableProps<M, AdditionalKey>): import("@emotion/react/jsx-runtime").JSX.Element;

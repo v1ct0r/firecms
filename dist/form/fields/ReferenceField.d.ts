@@ -9,4 +9,4 @@ export declare const useStyles: (props?: any) => import("@mui/styles").ClassName
  */
 export declare function ReferenceField<M extends {
     [Key: string]: any;
-}>({ name, value, setValue, error, showError, disabled, touched, autoFocus, property, includeDescription, context, dependsOnOtherProperties }: FieldProps<EntityReference>): import("@emotion/react/jsx-runtime").JSX.Element;
+}>({ name, value, setValue, error, showError, disabled, touched, autoFocus, property, includeDescription, context, shouldAlwaysRerender }: FieldProps<EntityReference>): import("@emotion/react/jsx-runtime").JSX.Element;

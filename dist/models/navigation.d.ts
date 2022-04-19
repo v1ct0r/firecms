@@ -1,10 +1,11 @@
 /// <reference types="react" />
 import { AuthController } from "./auth";
-import { EntityCollection } from "./collections";
+import { EntityCollection, EntityCollectionResolver } from "./collections";
 import { User } from "./user";
 import { Locale } from "./locales";
 import { DataSource } from "./datasource";
 import { StorageSource } from "./storage";
+import { PartialEntityCollection } from "./config_persistence";
 /**
  * You can use this builder to customize the navigation, based on the logged in
  * user
@@ -68,11 +69,40 @@ export declare type NavigationContext = {
     navigation?: Navigation;
     loading: boolean;
     navigationLoadingError?: any;
-    isCollectionPath: (path: string) => boolean;
-    getEntityOrCollectionPath: (cmsPath: string) => string;
-    buildCollectionPath: (path: string) => string;
-    buildCMSUrl: (path: string) => string;
-    buildHomeUrl: () => string;
+    /**
+     * Is the registry ready to be used
+     */
+    initialised: boolean;
+    /**
+     * Set props for path
+     * @return used key
+     */
+    setOverride: <M>(props: {
+        path: string;
+        entityId?: string;
+        schemaConfig?: Partial<EntityCollectionResolver>;
+        overrideSchemaRegistry?: boolean;
+    }) => string | undefined;
+    /**
+     * Get the schema configuration for a given path.
+     * If you use this method you can use a baseCollection that will be used
+     * to resolve the initial properties of the collection, before applying
+     * the collection configuration changes that are persisted.
+     * If you don't specify it, the collection is fetched from the local navigation.
+     */
+    getCollectionResolver: <M>(path: string, entityId?: string, baseCollection?: EntityCollection<M>) => EntityCollectionResolver<M> | undefined;
+    /**
+     * Remove all keys not used
+     * @param used keys
+     */
+    removeAllOverridesExcept: (entityRefs: {
+        path: string;
+        entityId?: string;
+    }[]) => void;
+    /**
+     * Use this callback when a collection has been modified so it is persisted.
+     */
+    onCollectionModifiedForUser: <M>(path: string, partialCollection: PartialEntityCollection<M>) => void;
     /**
      * Default path under the navigation routes of the CMS will be created
      */
@@ -81,6 +111,35 @@ export declare type NavigationContext = {
      * Default path under the collection routes of the CMS will be created
      */
     baseCollectionPath: string;
+    /**
+     * Convert a URL path to a collection or entity path
+     * `/c/products` => `products`
+     * `/my_cms/c/products/B34SAP8Z` => `products/B34SAP8Z`
+     * `/my_cms/my_view` => `my_view`
+     * @param cmsPath
+     */
+    urlPathToDataPath: (cmsPath: string) => string;
+    /**
+     * Convert a collection or entity path to a URL path
+     * @param path
+     */
+    buildCMSUrlPath: (path: string) => string;
+    /**
+     * Base url path for the home screen
+     */
+    homeUrl: string;
+    /**
+     * Check if a url path belongs to a collection
+     * @param path
+     */
+    isUrlCollectionPath: (urlPath: string) => boolean;
+    /**
+     * Build a URL collection path from a data path
+     * `products` => `/c/products`
+     * `products/B34SAP8Z` => `/c/products/B34SAP8Z`
+     * @param path
+     */
+    buildUrlCollectionPath: (path: string) => string;
 };
 /**
  * Custom additional views created by the developer, added to the main

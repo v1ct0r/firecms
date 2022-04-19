@@ -1,1 +1,0 @@
-export declare const formStyles: (props?: any) => import("@mui/styles").ClassNameMap<"button" | "paper" | "largePadding" | "inputLabel" | "shrinkInputLabel" | "buttons" | "form" | "input" | "select" | "oneOfInput">;

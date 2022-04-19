@@ -16,4 +16,4 @@ import { FirebaseCMSAppProps } from "./FirebaseCMSAppProps";
  * @constructor
  * @category Firebase
  */
-export declare function FirebaseCMSApp({ name, logo, toolbarExtraWidget, authentication, schemaResolver, navigation, textSearchController, allowSkipLogin, signInOptions, firebaseConfig, onFirebaseInit, primaryColor, secondaryColor, fontFamily, dateTimeFormat, locale, HomePage, basePath, baseCollectionPath }: FirebaseCMSAppProps): import("@emotion/react/jsx-runtime").JSX.Element;
+export declare function FirebaseCMSApp({ name, logo, toolbarExtraWidget, authentication, schemaOverrideHandler, navigation, textSearchController, allowSkipLogin, signInOptions, firebaseConfig, onFirebaseInit, primaryColor, secondaryColor, fontFamily, dateTimeFormat, locale, HomePage, basePath, baseCollectionPath, LoginViewProps }: FirebaseCMSAppProps): import("@emotion/react/jsx-runtime").JSX.Element;

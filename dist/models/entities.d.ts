@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { EnumValues, PropertiesOrBuilder } from "./properties";
+import { EnumValues, Properties, PropertiesOrBuilder } from "./properties";
 /**
  * Specification for defining an entity
  * @category Models
@@ -16,13 +16,18 @@ export interface EntitySchema<M extends {
      */
     description?: string;
     /**
-     * If this property is not set, the property will be created by the
+     * If this prop is not set, the ID of the document will be created by the
      * datasource.
-     * You can set the value to true to allow the users to choose the ID.
-     * You can also pass a set of values (as an EnumValues object) to allow them
-     * to pick from only those
+     *
+     * You can set the value to 'true' to force the users to choose the ID.
+     *
+     * You can set the value to 'optional' to allow the users to choose the ID,
+     * If the ID is empty, an automatic ID will be set.
+     *
+     * You can also pass a set of values (as an {@link EnumValues} object) to
+     * allow users to pick from only those.
      */
-    customId?: boolean | EnumValues;
+    customId?: boolean | "optional" | EnumValues;
     /**
      * Set of properties that compose an entity
      */
@@ -37,6 +42,28 @@ export interface EntitySchema<M extends {
      */
     views?: EntityCustomView<M>[];
 }
+/**
+ * @category Models
+ */
+export declare type EntitySchemaResolverProps<M = any> = {
+    entityId?: string | undefined;
+    values?: Partial<EntityValues<M>>;
+    previousValues?: Partial<EntityValues<M>>;
+};
+/**
+ * Use to resolve the schema properties for specific path, entity id or values.
+ * @category Models
+ */
+export declare type EntitySchemaResolver<M = any> = ({ entityId, values, previousValues }: EntitySchemaResolverProps<M>) => ResolvedEntitySchema<M>;
+/**
+ * This is the same entity schema you define, only all the property builders
+ * are resolved to regular `Property` objects.
+ * @category Models
+ */
+export declare type ResolvedEntitySchema<M> = Omit<EntitySchema<M>, "properties"> & {
+    properties: Properties<M>;
+    originalSchema: EntitySchema<M>;
+};
 /**
  * New or existing status
  * @category Models
@@ -121,14 +148,14 @@ export interface EntityCustomViewParams<M extends {
     /**
      * Schema used by this entity
      */
-    schema: EntitySchema<M>;
+    schema: ResolvedEntitySchema<M>;
     /**
      * Entity that this view refers to. It can be undefined if the entity is new
      */
     entity?: Entity<M>;
     /**
      * Modified values in the form that have not been saved yet.
-     * If the entity is not new and the values are not modified, this values
+     * If the entity is not new and the values are not modified, these values
      * are the same as in `entity`
      */
     modifiedValues?: EntityValues<M>;

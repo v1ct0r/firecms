@@ -1,8 +1,6 @@
 import React from "react";
 import { CollectionSize } from "../../../../models";
-interface CollectionTableToolbarProps<M extends {
-    [Key: string]: any;
-}> {
+interface CollectionTableToolbarProps {
     size: CollectionSize;
     filterIsSet: boolean;
     actions?: React.ReactNode;
@@ -14,5 +12,5 @@ interface CollectionTableToolbarProps<M extends {
 }
 export declare function CollectionTableToolbar<M extends {
     [Key: string]: any;
-}>(props: CollectionTableToolbarProps<M>): import("@emotion/react/jsx-runtime").JSX.Element;
+}>(props: CollectionTableToolbarProps): import("@emotion/react/jsx-runtime").JSX.Element;
 export {};

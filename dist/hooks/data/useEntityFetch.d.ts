@@ -1,4 +1,4 @@
-import { Entity, EntitySchema } from "../../models";
+import { Entity, EntitySchema, EntitySchemaResolver } from "../../models";
 /**
  * @category Hooks and utilities
  */
@@ -7,7 +7,7 @@ export interface EntityFetchProps<M extends {
 }> {
     path?: string;
     entityId?: string;
-    schema?: EntitySchema<M>;
+    schema?: EntitySchema<M> | EntitySchemaResolver<M>;
     useCache?: boolean;
 }
 /**
@@ -26,7 +26,7 @@ export interface EntityFetchResult<M extends {
  * @param path
  * @param schema
  * @param entityId
- * @param listen
+ * @param useCache
  * @category Hooks and utilities
  */
 export declare function useEntityFetch<M extends {

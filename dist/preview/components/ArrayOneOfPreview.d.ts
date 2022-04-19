@@ -1,4 +1,5 @@
 import { PreviewComponentProps } from "../internal";
+export declare const useStyles: (props?: any) => import("@mui/styles").ClassNameMap<"array" | "arrayWrap" | "arrayItemBig">;
 /**
  * @category Preview components
  */

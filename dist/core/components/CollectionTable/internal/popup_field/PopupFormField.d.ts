@@ -1,4 +1,4 @@
-import { Entity, EntitySchema, Property } from "../../../../../models";
+import { Entity, EntitySchemaResolver } from "../../../../../models";
 import { CustomFieldValidator } from "../../../../../form/validation";
 import { OnCellValueChangeParams } from "../../column_builder";
 export declare const useStyles: (props?: any) => import("@mui/styles").ClassNameMap<"button" | "hidden" | "form" | "popup" | "popupInner">;
@@ -7,17 +7,15 @@ interface PopupFormFieldProps<M extends {
 }> {
     entity?: Entity<M>;
     customFieldValidator?: CustomFieldValidator;
-    schema: EntitySchema<M>;
     path: string;
     tableKey: string;
     name?: keyof M;
-    property?: Property;
+    schemaResolver?: EntitySchemaResolver<M>;
     cellRect?: DOMRect;
-    formPopupOpen: boolean;
-    setFormPopupOpen: (value: boolean) => void;
+    open: boolean;
+    onClose: () => void;
     columnIndex?: number;
     setPreventOutsideClick: (value: any) => void;
-    usedPropertyBuilder: boolean;
     /**
      * Callback when the value of a cell has been edited
      * @param params
@@ -26,5 +24,5 @@ interface PopupFormFieldProps<M extends {
 }
 export declare function PopupFormField<M extends {
     [Key: string]: any;
-}>({ tableKey, entity, customFieldValidator, name, property, schema, path, cellRect, setPreventOutsideClick, formPopupOpen, setFormPopupOpen, columnIndex, usedPropertyBuilder, onCellValueChange }: PopupFormFieldProps<M>): import("@emotion/react/jsx-runtime").JSX.Element;
+}>({ tableKey, entity, customFieldValidator, name, schemaResolver, path, cellRect, setPreventOutsideClick, open, onClose, columnIndex, onCellValueChange }: PopupFormFieldProps<M>): import("@emotion/react/jsx-runtime").JSX.Element;
 export {};

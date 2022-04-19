@@ -1,9 +1,7 @@
-import { EntityCallbacks, EntityCollection, EntitySchema, PermissionsBuilder } from "../../models";
-export interface EntityViewProps<M extends {
-    [Key: string]: any;
-}, UserType> {
+import { EntityCallbacks, EntityCollection, EntitySchema, EntitySchemaResolver, PermissionsBuilder } from "../../models";
+export interface EntityViewProps<M, UserType> {
     path: string;
-    schema: EntitySchema;
+    schema: EntitySchema<M> | EntitySchemaResolver<M>;
     entityId?: string;
     copy?: boolean;
     selectedSubpath?: string;
@@ -15,4 +13,4 @@ export interface EntityViewProps<M extends {
 }
 export declare function EntityView<M extends {
     [Key: string]: any;
-}, UserType>({ path, entityId, callbacks, selectedSubpath, copy, permissions, schema, subcollections, onModifiedValues, width }: EntityViewProps<M, UserType>): import("@emotion/react/jsx-runtime").JSX.Element;
+}, UserType>({ path, entityId, callbacks, selectedSubpath, copy, permissions, schema: schemaOrResolver, subcollections, onModifiedValues, width }: EntityViewProps<M, UserType>): import("@emotion/react/jsx-runtime").JSX.Element;

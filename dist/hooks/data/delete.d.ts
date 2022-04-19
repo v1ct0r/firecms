@@ -1,8 +1,8 @@
-import { DataSource, DeleteEntityProps, Entity, EntityCallbacks, FireCMSContext } from "../../models";
+import { DataSource, DeleteEntityProps, Entity, EntityCallbacks, FireCMSContext, ResolvedEntitySchema } from "../../models";
 /**
  * @category Hooks and utilities
  */
-export declare type DeleteEntityWithCallbacksProps<M, UserType> = DeleteEntityProps<M> & {
+export declare type DeleteEntityWithCallbacksProps<M> = DeleteEntityProps<M> & {
     callbacks?: EntityCallbacks<M>;
     onDeleteSuccess?: (entity: Entity<M>) => void;
     onDeleteFailure?: (entity: Entity<M>, e: Error) => void;
@@ -30,7 +30,8 @@ export declare type DeleteEntityWithCallbacksProps<M, UserType> = DeleteEntityPr
  * @param context
  * @category Hooks and utilities
  */
-export declare function deleteEntityWithCallbacks<M, UserType>({ dataSource, entity, schema, callbacks, onDeleteSuccess, onDeleteFailure, onPreDeleteHookError, onDeleteSuccessHookError, context }: DeleteEntityWithCallbacksProps<M, UserType> & {
+export declare function deleteEntityWithCallbacks<M, UserType>({ dataSource, entity, schema, callbacks, onDeleteSuccess, onDeleteFailure, onPreDeleteHookError, onDeleteSuccessHookError, context }: DeleteEntityWithCallbacksProps<M> & {
+    schema: ResolvedEntitySchema<M>;
     dataSource: DataSource;
     context: FireCMSContext<UserType>;
 }): Promise<boolean>;

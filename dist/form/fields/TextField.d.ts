@@ -8,5 +8,5 @@ interface TextFieldProps<T extends string | number> extends FieldProps<T> {
  * and tables to the specified properties.
  * @category Form fields
  */
-export declare function TextField<T extends string | number>({ name, value, setValue, error, showError, disabled, autoFocus, property, includeDescription, allowInfinity, dependsOnOtherProperties }: TextFieldProps<T>): import("@emotion/react/jsx-runtime").JSX.Element;
+export declare function TextField<T extends string | number>({ name, value, setValue, error, showError, disabled, autoFocus, property, includeDescription, allowInfinity, shouldAlwaysRerender }: TextFieldProps<T>): import("@emotion/react/jsx-runtime").JSX.Element;
 export {};

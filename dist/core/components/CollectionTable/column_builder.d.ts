@@ -1,4 +1,4 @@
-import { AdditionalColumnDelegate, CollectionSize, Entity, EntitySchema, Property } from "../../../models";
+import { AdditionalColumnDelegate, CollectionSize, Entity, EntitySchemaResolver, Property } from "../../../models";
 import React from "react";
 import { TableColumn } from "../../index";
 export declare type ColumnsFromSchemaProps<M, AdditionalKey extends string, UserType> = {
@@ -7,9 +7,9 @@ export declare type ColumnsFromSchemaProps<M, AdditionalKey extends string, User
      */
     path: string;
     /**
-     * Schema of the entity displayed by this collection
+     * Use to resolve the schema properties for specific path, entity id or values
      */
-    schema: EntitySchema<M>;
+    schemaResolver: EntitySchemaResolver<M>;
     /**
      * Properties displayed in this collection. If this property is not set
      * every property is displayed, you can filter
@@ -69,7 +69,7 @@ export interface OnCellValueChangeParams<T, M extends {
     setError: (e: Error) => void;
 }
 export declare function checkInlineEditing<M>(inlineEditing: ((entity: Entity<any>) => boolean) | boolean, entity: Entity<M>): boolean;
-export declare function buildColumnsFromSchema<M, AdditionalKey extends string, UserType>({ schema, additionalColumns, displayedProperties, path, inlineEditing, size, onCellValueChange, uniqueFieldValidator }: ColumnsFromSchemaProps<M, AdditionalKey, UserType>): {
+export declare function useBuildColumnsFromSchema<M, AdditionalKey extends string, UserType>({ schemaResolver, additionalColumns, displayedProperties, path, inlineEditing, size, onCellValueChange, uniqueFieldValidator }: ColumnsFromSchemaProps<M, AdditionalKey, UserType>): {
     columns: TableColumn<M>[];
     popupFormField: React.ReactElement;
 };

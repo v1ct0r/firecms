@@ -23,7 +23,7 @@ import { CMSFormFieldProps, CMSType } from "../models";
  * @param tableMode
  * @param partOfArray
  * @param autoFocus
- * @param dependsOnOtherProperties
+ * @param shouldAlwaysRerender
  * @category Form custom fields
  */
-export declare function buildPropertyField<T extends CMSType = any, M = any>({ name, property, context, includeDescription, underlyingValueHasChanged, disabled, tableMode, partOfArray, autoFocus, dependsOnOtherProperties }: CMSFormFieldProps<M>): ReactElement<CMSFormFieldProps<M>>;
+export declare function buildPropertyField<T extends CMSType = any, M = any>({ name, property, context, includeDescription, underlyingValueHasChanged, disabled, tableMode, partOfArray, autoFocus, shouldAlwaysRerender }: CMSFormFieldProps<M>): ReactElement<CMSFormFieldProps<M>>;

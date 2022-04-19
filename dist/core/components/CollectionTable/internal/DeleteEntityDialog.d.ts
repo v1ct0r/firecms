@@ -1,10 +1,11 @@
-import { Entity, EntityCallbacks, EntitySchema } from "../../../../models";
+import { Entity, EntityCallbacks, EntitySchema, EntitySchemaResolver } from "../../../../models";
 export interface DeleteEntityDialogProps<M extends {
     [Key: string]: any;
-}, UserType> {
+}> {
     entityOrEntitiesToDelete?: Entity<M> | Entity<M>[];
     path: string;
     schema: EntitySchema<M>;
+    schemaResolver: EntitySchemaResolver<M>;
     open: boolean;
     onClose: () => void;
     callbacks?: EntityCallbacks<M>;
@@ -13,4 +14,4 @@ export interface DeleteEntityDialogProps<M extends {
 }
 export declare function DeleteEntityDialog<M extends {
     [Key: string]: any;
-}, UserType>({ entityOrEntitiesToDelete, schema, onClose, open, callbacks, onEntityDelete, onMultipleEntitiesDelete, path, ...other }: DeleteEntityDialogProps<M, UserType>): import("@emotion/react/jsx-runtime").JSX.Element;
+}>({ entityOrEntitiesToDelete, schemaResolver, onClose, open, callbacks, onEntityDelete, onMultipleEntitiesDelete, path, ...other }: DeleteEntityDialogProps<M>): import("@emotion/react/jsx-runtime").JSX.Element;

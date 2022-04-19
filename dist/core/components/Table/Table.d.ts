@@ -1,4 +1,10 @@
 import { TableProps } from "./TableProps";
+declare module "react" {
+    interface Attributes {
+        css?: any;
+    }
+}
+export declare const useTableStyles: (props?: any) => import("@mui/styles").ClassNameMap<string>;
 /**
  * This is a Table component that allows displaying arbitrary data, not
  * necessarily related to entities or properties. It is the component

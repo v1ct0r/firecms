@@ -9,5 +9,5 @@ export declare const useStyles: (props?: any) => import("@mui/styles").ClassName
  * and tables to the specified properties.
  * @category Form fields
  */
-export declare function MarkdownField({ name, value, setValue, error, showError, disabled, autoFocus, touched, property, tableMode, includeDescription, context, dependsOnOtherProperties }: MarkDownFieldProps): import("@emotion/react/jsx-runtime").JSX.Element;
+export declare function MarkdownField({ name, value, setValue, error, showError, disabled, autoFocus, touched, property, tableMode, includeDescription, context, shouldAlwaysRerender }: MarkDownFieldProps): import("@emotion/react/jsx-runtime").JSX.Element;
 export {};

@@ -7,4 +7,4 @@ import { FieldProps } from "../../models";
  * and tables to the specified properties.
  * @category Form fields
  */
-export declare function ArrayDefaultField<T extends Array<any>>({ name, value, error, showError, isSubmitting, setValue, tableMode, property, includeDescription, underlyingValueHasChanged, context, disabled, dependsOnOtherProperties }: FieldProps<T>): import("@emotion/react/jsx-runtime").JSX.Element;
+export declare function ArrayDefaultField<T extends Array<any>>({ name, value, error, showError, isSubmitting, setValue, tableMode, property, includeDescription, underlyingValueHasChanged, context, disabled, shouldAlwaysRerender }: FieldProps<T>): import("@emotion/react/jsx-runtime").JSX.Element;

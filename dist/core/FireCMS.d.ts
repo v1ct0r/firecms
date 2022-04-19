@@ -1,5 +1,5 @@
 import React from "react";
-import { AuthDelegate, Authenticator, DataSource, EntityCollection, EntityLinkBuilder, FireCMSContext, Locale, Navigation, NavigationBuilder, SchemaResolver, StorageSource } from "../models";
+import { AuthDelegate, Authenticator, DataSource, EntityCollection, EntityLinkBuilder, FireCMSContext, Locale, Navigation, NavigationBuilder, SchemaOverrideHandler, StorageSource } from "../models";
 /**
  * @category Core
  */
@@ -45,11 +45,13 @@ export interface FireCMSProps<UserType> {
     /**
      * Used to override schemas based on the collection path and entityId.
      * This resolver allows to override the schema for specific entities, or
-     * specific collections, app wide. This overrides schemas all through the app.
+     * specific collections, app wide.
      *
-     * You can also override schemas in place, when using `useSideEntityController`
+     * This overrides schemas **all through the app.**
+     *
+     * You can also override schemas in place, when using {@link useSideEntityController}
      */
-    schemaResolver?: SchemaResolver;
+    schemaOverrideHandler?: SchemaOverrideHandler;
     /**
      * Format of the dates in the CMS.
      * Defaults to 'MMMM dd, yyyy, HH:mm:ss'

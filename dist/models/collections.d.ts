@@ -1,9 +1,9 @@
 import React from "react";
-import { Entity, EntitySchema } from "./entities";
+import { Entity, EntitySchema, EntitySchemaResolver } from "./entities";
 import { User } from "./user";
 import { FireCMSContext } from "./firecms_context";
 import { EntityCallbacks } from "./entity_callbacks";
-import { AuthController } from "./auth";
+import { PermissionsBuilder } from "./permissions";
 /**
  * This interface represents a view that includes a collection of entities.
  * It can be in the root level of the configuration, defining the main
@@ -134,6 +134,55 @@ export interface EntityCollection<M extends {
     selectionController?: SelectionController<M>;
 }
 /**
+ * Sizes in which a collection can be rendered
+ * @category Models
+ */
+export declare type CollectionSize = "xs" | "s" | "m" | "l" | "xl";
+/**
+ * Use this interface for adding additional columns to entity collection views.
+ * If you need to do some async loading you can use AsyncPreviewComponent
+ * @category Models
+ */
+export interface AdditionalColumnDelegate<M extends {
+    [Key: string]: any;
+} = any, AdditionalKey extends string = string, UserType = User> {
+    /**
+     * Id of this column. You can use this id in the `properties` field of the
+     * collection in any order you want
+     */
+    id: AdditionalKey;
+    /**
+     * Header of this column
+     */
+    title: string;
+    /**
+     * Width of the generated column in pixels
+     */
+    width?: number;
+    /**
+     * Builder for the content of the cell for this column
+     */
+    builder: ({ entity, context }: {
+        entity: Entity<M>;
+        context: FireCMSContext<UserType>;
+    }) => React.ReactNode;
+    /**
+     * If this column needs to update dynamically based on other properties,
+     * you can define an array of keys as strings with the
+     * `dependencies` prop.
+     * e.g. ["name", "surname"]
+     * If you don't specify this prop, the generated column will not rerender
+     * on entity property updates.
+     */
+    dependencies?: Extract<keyof M, string>[];
+}
+/**
+ * @category Models
+ */
+export declare type EntityCollectionResolver<M = any> = EntityCollection<M> & {
+    schemaResolver: EntitySchemaResolver<M>;
+};
+/**
  * Parameter passed to the `extraActions` builder in the collection configuration
  *
  * @category Models
@@ -172,93 +221,11 @@ export declare type SelectionController<M = any> = {
     toggleEntitySelection: (entity: Entity<M>) => void;
 };
 /**
- * Sizes in which a collection can be rendered
+ * Filter conditions in a `Query.where()` clause are specified using the
+ * strings '<', '<=', '==', '>=', '>', 'array-contains', 'in', and 'array-contains-any'.
  * @category Models
  */
-export declare type CollectionSize = "xs" | "s" | "m" | "l" | "xl";
-/**
- * Define the operations that can be performed in an entity.
- * @category Models
- */
-export interface Permissions {
-    /**
-     * Can the user add new entities. Defaults to `true`
-     */
-    create?: boolean;
-    /**
-     * Can the elements in this collection be edited. Defaults to `true`
-     */
-    edit?: boolean;
-    /**
-     * Can the user delete entities. Defaults to `true`
-     */
-    delete?: boolean;
-}
-/**
- * Builder used to assign `create`, `edit` and `delete` permissions to entities,
- * based on the logged user, entity or collection path
- * @category Models
- */
-export declare type PermissionsBuilder<M extends {
-    [Key: string]: any;
-}, UserType = User> = Permissions | (({ entity, path, user, authController, context }: PermissionsBuilderProps<M, UserType>) => Permissions);
-/**
- * Props passed to a {@link PermissionsBuilder}
- * @category Models
- */
-export interface PermissionsBuilderProps<M extends {
-    [Key: string]: any;
-}, UserType = User> {
-    /**
-     * Entity being edited, might be null if it is new
-     */
-    entity: Entity<M> | null;
-    /**
-     * Collection path of this entity
-     */
-    path: string;
-    /**
-     * Logged in user
-     */
-    user: UserType | null;
-    /**
-     * Auth controller
-     */
-    authController: AuthController<UserType>;
-    /**
-     * Context of the app status
-     */
-    context: FireCMSContext<UserType>;
-}
-/**
- * Use this interface for adding additional columns to entity collection views.
- * If you need to do some async loading you can use AsyncPreviewComponent
- * @category Models
- */
-export interface AdditionalColumnDelegate<M extends {
-    [Key: string]: any;
-} = any, AdditionalKey extends string = string, UserType = User> {
-    /**
-     * Id of this column. You can use this id in the `properties` field of the
-     * collection in any order you want
-     */
-    id: AdditionalKey;
-    /**
-     * Header of this column
-     */
-    title: string;
-    /**
-     * Width of the generated column in pixels
-     */
-    width?: number;
-    /**
-     * Builder for the content of the cell for this column
-     */
-    builder: ({ entity, context }: {
-        entity: Entity<M>;
-        context: FireCMSContext<UserType>;
-    }) => React.ReactNode;
-}
+export declare type WhereFilterOp = "<" | "<=" | "==" | "!=" | ">=" | ">" | "array-contains" | "in" | "array-contains-any";
 /**
  * Used to define filters applied in collections
  * @category Models
@@ -266,12 +233,6 @@ export interface AdditionalColumnDelegate<M extends {
 export declare type FilterValues<M> = {
     [K in keyof M]?: [WhereFilterOp, any];
 };
-/**
- * Filter conditions in a `Query.where()` clause are specified using the
- * strings '<', '<=', '==', '>=', '>', 'array-contains', 'in', and 'array-contains-any'.
- * @category Models
- */
-export declare type WhereFilterOp = "<" | "<=" | "==" | "!=" | ">=" | ">" | "array-contains" | "in" | "array-contains-any";
 /**
  * You can use this configuration to add additional columns to the data
  * exports

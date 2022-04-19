@@ -1,7 +1,5 @@
 import { ArrayProperty, CollectionSize, EntityReference, ReferenceProperty } from "../../../../../models";
-export declare function TableReferenceField<M extends {
-    [Key: string]: any;
-}>(props: {
+export declare function TableReferenceField(props: {
     name: string;
     disabled: boolean;
     internalValue: EntityReference | EntityReference[] | undefined | null;
