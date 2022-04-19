@@ -1,0 +1,1 @@
+export declare const useStyles: (props?: any) => import("@mui/styles").ClassNameMap<"flexCenter" | "smallMargin" | "arrayWrap" | "array" | "arrayItem" | "arrayItemBig" | "tableNoBottomBorder" | "link">;
