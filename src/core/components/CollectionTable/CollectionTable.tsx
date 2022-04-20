@@ -146,7 +146,7 @@ export function CollectionTableInternal<M extends { [Key: string]: any },
                                     overrideSchemaRegistry: false
                                 });
                             }}>
-                        {subcollection.name}
+                        {(subcollection.buttonContent && subcollection.buttonContent({entity})) ?? subcollection.name}
                     </Button>
                 )
             };

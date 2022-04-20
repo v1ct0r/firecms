@@ -21,6 +21,10 @@ export interface EntityCollection<M extends { [Key: string]: any } = any,
      */
     name: string;
 
+    buttonContent?: ({entity}: {
+        entity: Entity<M>
+    }) => string;
+
     /**
      * Optional description of this view. You can use Markdown.
      */
