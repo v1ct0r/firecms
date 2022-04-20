@@ -18,6 +18,9 @@ export interface EntityCollection<M extends {
      * Plural name of the view. E.g. 'products'
      */
     name: string;
+    buttonContent?: ({ entity }: {
+        entity: Entity<M>;
+    }) => string;
     /**
      * Optional description of this view. You can use Markdown.
      */

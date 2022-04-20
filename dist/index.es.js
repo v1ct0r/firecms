@@ -9269,7 +9269,9 @@ function CollectionTableInternal({
               overrideSchemaRegistry: false
             });
           },
-          children: subcollection.name
+          children: (subcollection.buttonContent && subcollection.buttonContent({
+            entity
+          })) ?? subcollection.name
         })
       };
     }) ?? [];
