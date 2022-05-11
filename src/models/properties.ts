@@ -113,6 +113,11 @@ interface BaseProperty {
      */
     validation?: PropertyValidationSchema;
 
+    /**
+     * Hide property if user not a global admin
+     */
+    onlyForGlobalAdmin?: boolean;
+
 }
 
 /**
