@@ -1,6 +1,6 @@
-import { CollectionSize, Entity } from "../../../../models";
+import {CollectionSize, Entity} from "../../../../models";
 
-import React, { MouseEvent, useCallback } from "react";
+import React, {MouseEvent, useCallback} from "react";
 import {
     alpha,
     Checkbox,
@@ -14,7 +14,7 @@ import {
     Tooltip,
     Typography
 } from "@mui/material";
-import { Delete, FileCopy, KeyboardTab, MoreVert } from "@mui/icons-material";
+import {Delete, FileCopy, KeyboardTab, MoreVert} from "@mui/icons-material";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
 
@@ -72,6 +72,15 @@ export const useTableStyles = makeStyles<Theme>(theme => createStyles({
         textAlign: "center",
         textOverflow: "ellipsis",
         overflow: "hidden"
+    },
+    selectContainer: {
+        display: 'flex',
+        justifyContent: 'space-around'
+    },
+    verticalLine: {
+        width: '1px',
+        backgroundColor: '#dfdfdf',
+        height: '55px',
     }
 }));
 
@@ -152,60 +161,34 @@ export function CollectionRowActions<M extends { [Key: string]: any }>({
         <div className={classes.cellButtonsWrap}>
 
             {(editEnabled || deleteEnabled || selectionEnabled) &&
-            <div className={classes.cellButtons}
-            >
-                {editEnabled &&
-                <Tooltip title={`Edit ${entity.id}`}>
-                    <IconButton
-                        onClick={(event: MouseEvent) => {
-                            event.stopPropagation();
-                            if (onEditClicked)
-                                onEditClicked(entity);
-                        }}
-                        size="large">
-                        <KeyboardTab/>
-                    </IconButton>
-                </Tooltip>
-                }
-
-                {selectionEnabled &&
-                <Tooltip title={`Select ${entity.id}`}>
-                    <Checkbox
-                        checked={isSelected}
-                        onChange={onCheckboxChange}
-                    />
-                </Tooltip>}
-
-                {(copyEnabled || deleteEnabled) &&
-                <IconButton onClick={openMenu} size="large">
-                    <MoreVert/>
-                </IconButton>
-                }
-
-                {(copyEnabled || deleteEnabled) && <Menu
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={closeMenu}
-                    elevation={2}
+                <div className={classes.cellButtons}
                 >
-                    {deleteEnabled && <MenuItem onClick={onDeleteClick}>
-                        <ListItemIcon>
-                            <Delete/>
-                        </ListItemIcon>
-                        <ListItemText primary={"Delete"}/>
-                    </MenuItem>}
-
-                    {copyEnabled && <MenuItem onClick={onCopyClick}>
-                        <ListItemIcon>
-                            <FileCopy/>
-                        </ListItemIcon>
-                        <ListItemText primary="Copy"/>
-                    </MenuItem>}
-
-                </Menu>}
-
-
-            </div>}
+                    (
+                    <div className={classes.selectContainer}>
+                        {editEnabled &&
+                            <Tooltip title={`Edit ${entity.id}`}>
+                                <IconButton
+                                    onClick={(event: MouseEvent) => {
+                                        event.stopPropagation();
+                                        if (onEditClicked)
+                                            onEditClicked(entity);
+                                    }}
+                                    size="large">
+                                    <KeyboardTab/>
+                                </IconButton>
+                            </Tooltip>
+                        }
+                        <span className={classes.verticalLine}></span>
+                        {selectionEnabled &&
+                            <Tooltip title={`Select ${entity.id}`}>
+                                <Checkbox
+                                    checked={isSelected}
+                                    onChange={onCheckboxChange}
+                                />
+                            </Tooltip>}
+                    </div>
+                    )
+                </div>}
 
             {size !== "xs" && (
                 <div className={classes.cellButtonsId}>

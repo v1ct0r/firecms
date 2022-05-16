@@ -134,7 +134,7 @@ export function EntityCollectionView<M extends { [Key: string]: any }>({
     const hoverRow = collection.inlineEditing !== undefined && !collection.inlineEditing;
 
     const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
-
+//
     const selectionController = useSelectionController<M>();
     const usedSelectionController = collection.selectionController ?? selectionController;
     const {

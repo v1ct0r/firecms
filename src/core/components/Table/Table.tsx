@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import BaseTable, { Column, ColumnShape } from "react-base-table";
 import Measure, { ContentRect } from "react-measure";
-import { alpha, Box, Theme, Typography } from "@mui/material";
+import { alpha, Box, Checkbox, Theme, Typography } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import clsx from "clsx";
 
@@ -9,16 +9,13 @@ import { ErrorBoundary } from "../../internal/ErrorBoundary";
 import { CircularProgressCenter } from "../CircularProgressCenter";
 import { baseTableCss } from "./styles";
 import { TableHeader } from "./TableHeader";
-import {
-    TableColumn,
-    TableFilterValues,
-    TableProps,
-    TableWhereFilterOp
-} from "./TableProps";
+import { TableColumn, TableFilterValues, TableProps, TableWhereFilterOp } from "./TableProps";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
 
 import { getRowHeight } from "./common";
+import { useSelectionController } from "../EntityCollectionView";
+import { useNavigation } from "../../../hooks";
 
 const PIXEL_NEXT_PAGE_OFFSET = 1200;
 
@@ -88,6 +85,7 @@ export function Table<T>({
                              onColumnResize,
                              filter,
                              checkFilterCombination,
+                             collection,
                              onFilterUpdate,
                              sortBy,
                              error,
@@ -141,6 +139,23 @@ export function Table<T>({
 
         scrollToTop();
     };
+    const sel = useSelectionController()
+
+    const navigationContext = useNavigation();
+    const coll: any = navigationContext.getCollectionResolver<any>(collection.path)
+    console.log("collcollcoll", coll)
+    console.log("selectionController", coll.selectionController)
+
+
+    const [entityOrEntities, setUsedEntityOrEntities] = React.useState<any>();
+    const [multipleEntities, setMultipleEntities] = React.useState<boolean>();
+    const onCheckboxChange = () => {
+        console.log("entityOrEntitiesentityOrEntities", entityOrEntities)
+        console.log("multipleEntitiesmultipleEntities", multipleEntities)
+        console.log("selsel", sel)
+        console.log("sel.selectedEntities", sel.selectedEntities)
+        console.log('{idColumnBuilder}', idColumnBuilder)
+    }
 
     const resetSort = () => {
         if (onSortByUpdate)
@@ -153,7 +168,7 @@ export function Table<T>({
             tableRef.current.scrollToTop(0);
         }
     };
-
+    console.log("idColumnBuilder", idColumnBuilder)
     const onScroll = ({ scrollTop, scrollUpdateWasRequested }: {
         scrollLeft: number;
         scrollTop: number;
@@ -216,12 +231,22 @@ export function Table<T>({
             <ErrorBoundary>
                 {columnIndex === 0
                     ? <div className={classes.header}
-                         style={{
-                             display: "flex",
-                             justifyContent: "center",
-                             alignItems: "center"
-                         }}>
-                        ID
+                           style={{
+                               display: "flex",
+                               justifyContent: "center",
+                               alignItems: "center",
+                               width: "100%",
+                               padding: 0
+                           }}>
+                        <p style={{
+                            margin: 0,
+                            width: "45px"
+                        }}>ID</p>
+
+                        <Checkbox
+                            checked={false}
+                            onChange={onCheckboxChange}
+                        />
                     </div>
                     : <TableHeader
                         onFilterUpdate={onInternalFilterUpdate}
@@ -237,24 +262,24 @@ export function Table<T>({
 
     function buildErrorView() {
         return (
-                <Box display="flex"
-                     flexDirection={"column"}
-                     justifyContent="center"
-                     margin={6}>
+            <Box display="flex"
+                 flexDirection={"column"}
+                 justifyContent="center"
+                 margin={6}>
 
-                    <Typography variant={"h6"}>
-                        {"Error fetching data from the data source"}
-                    </Typography>
+                <Typography variant={"h6"}>
+                    {"Error fetching data from the data source"}
+                </Typography>
 
-                    {error?.name && <Typography>
-                        {error?.name}
-                    </Typography>}
+                {error?.name && <Typography>
+                    {error?.name}
+                </Typography>}
 
-                    {error?.message && <Typography>
-                        {error?.message}
-                    </Typography>}
+                {error?.message && <Typography>
+                    {error?.message}
+                </Typography>}
 
-                </Box>
+            </Box>
 
         );
     }
@@ -308,62 +333,62 @@ export function Table<T>({
                              css={baseTableCss}>
 
                             {tableSize?.bounds &&
-                            <BaseTable
-                                rowClassName={clsx(classes.tableRow, { [classes.tableRowClickable]: hoverRow })}
-                                data={data}
-                                onColumnResizeEnd={onBaseTableColumnResize}
-                                width={tableSize.bounds.width}
-                                height={tableSize.bounds.height}
-                                emptyRenderer={error ? buildErrorView() : buildEmptyView()}
-                                fixed
-                                ignoreFunctionInColumnCompare={false}
-                                rowHeight={getRowHeight(size)}
-                                ref={tableRef}
-                                onScroll={onScroll}
-                                overscanRowCount={2}
-                                onEndReachedThreshold={PIXEL_NEXT_PAGE_OFFSET}
-                                onEndReached={onEndReachedInternal}
-                                rowEventHandlers={
-                                    { onClick: clickRow as any }
-                                }
-                            >
-
-                                <Column
-                                    headerRenderer={headerRenderer}
-                                    cellRenderer={({
-                                                       rowData
-                                                   }: any) =>
-                                        idColumnBuilder
-                                            ? idColumnBuilder({
-                                                size,
-                                                entry: rowData
-                                            })
-                                            : null
+                                <BaseTable
+                                    rowClassName={clsx(classes.tableRow, { [classes.tableRowClickable]: hoverRow })}
+                                    data={data}
+                                    onColumnResizeEnd={onBaseTableColumnResize}
+                                    width={tableSize.bounds.width}
+                                    height={tableSize.bounds.height}
+                                    emptyRenderer={error ? buildErrorView() : buildEmptyView()}
+                                    fixed
+                                    ignoreFunctionInColumnCompare={false}
+                                    rowHeight={getRowHeight(size)}
+                                    ref={tableRef}
+                                    onScroll={onScroll}
+                                    overscanRowCount={2}
+                                    onEndReachedThreshold={PIXEL_NEXT_PAGE_OFFSET}
+                                    onEndReached={onEndReachedInternal}
+                                    rowEventHandlers={
+                                        { onClick: clickRow as any }
                                     }
-                                    align={"center"}
-                                    key={"header-id"}
-                                    dataKey={"id"}
-                                    flexShrink={0}
-                                    frozen={frozenIdColumn ? "left" : undefined}
-                                    width={160}/>
+                                >
 
-                                {columns.map((column) =>
                                     <Column
-                                        key={column.key}
-                                        title={column.label}
-                                        className={classes.column}
                                         headerRenderer={headerRenderer}
-                                        cellRenderer={column.cellRenderer}
-                                        height={getRowHeight(size)}
-                                        align={column.align}
-                                        flexGrow={1}
+                                        cellRenderer={({
+                                                           rowData
+                                                       }: any) =>
+                                            idColumnBuilder
+                                                ? idColumnBuilder({
+                                                    size,
+                                                    entry: rowData
+                                                })
+                                                : null
+                                        }
+                                        align={"center"}
+                                        key={"header-id"}
+                                        dataKey={"id"}
                                         flexShrink={0}
-                                        resizable={true}
-                                        size={size}
-                                        dataKey={column.key}
-                                        width={column.width}/>)
-                                }
-                            </BaseTable>}
+                                        frozen={frozenIdColumn ? "left" : undefined}
+                                        width={160}/>
+
+                                    {columns.map((column) =>
+                                        <Column
+                                            key={column.key}
+                                            title={column.label}
+                                            className={classes.column}
+                                            headerRenderer={headerRenderer}
+                                            cellRenderer={column.cellRenderer}
+                                            height={getRowHeight(size)}
+                                            align={column.align}
+                                            flexGrow={1}
+                                            flexShrink={0}
+                                            resizable={true}
+                                            size={size}
+                                            dataKey={column.key}
+                                            width={column.width}/>)
+                                    }
+                                </BaseTable>}
                         </div>
                     );
                 }}

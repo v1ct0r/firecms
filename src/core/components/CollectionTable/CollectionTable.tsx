@@ -146,7 +146,7 @@ export function CollectionTableInternal<M extends { [Key: string]: any },
                                     overrideSchemaRegistry: false
                                 });
                             }}>
-                        {(subcollection.buttonContent && subcollection.buttonContent({entity})) ?? subcollection.name}
+                        {(subcollection.buttonContent && subcollection.buttonContent({ entity })) ?? subcollection.name}
                     </Button>
                 )
             };
@@ -257,9 +257,7 @@ export function CollectionTableInternal<M extends { [Key: string]: any },
     }, [tableRowActionsBuilder]);
 
     const onRowClick = useCallback(({ rowData }: { rowData: Entity<M> }) => {
-        if (checkInlineEditing(inlineEditing, rowData))
-            return;
-        return onEntityClick && onEntityClick(rowData);
+
     }, [onEntityClick]);
 
     const updateSize = useCallback((size: CollectionSize) => {
@@ -301,6 +299,7 @@ export function CollectionTableInternal<M extends { [Key: string]: any },
                 onSortByUpdate={setSortBy as any}
                 hoverRow={hoverRow}
                 checkFilterCombination={(filterValues, sortBy) => isFilterCombinationValid(filterValues, filterCombinations, sortBy)}
+                collection={collection}
             />
 
             {popupFormField}
