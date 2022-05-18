@@ -1,6 +1,6 @@
-import React, { useCallback, useMemo } from "react";
-import { Button, Paper, Theme, useMediaQuery, useTheme } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import React, {useCallback, useMemo} from "react";
+import {Button, Paper, Theme, useMediaQuery, useTheme} from "@mui/material";
+import {makeStyles} from "@mui/styles";
 import createStyles from "@mui/styles/createStyles";
 
 import {
@@ -13,10 +13,10 @@ import {
     User,
     WhereFilterOp
 } from "../../../models";
-import { getSubcollectionColumnId, useColumnIds } from "./internal/common";
-import { CollectionTableToolbar } from "./internal/CollectionTableToolbar";
-import { CollectionRowActions } from "./internal/CollectionRowActions";
-import { CollectionTableProps } from "./CollectionTableProps";
+import {getSubcollectionColumnId, useColumnIds} from "./internal/common";
+import {CollectionTableToolbar} from "./internal/CollectionTableToolbar";
+import {CollectionRowActions} from "./internal/CollectionRowActions";
+import {CollectionTableProps} from "./CollectionTableProps";
 import {
     saveEntityWithCallbacks,
     useCollectionFetch,
@@ -24,7 +24,7 @@ import {
     useFireCMSContext,
     useSideEntityController
 } from "../../../hooks";
-import { Table } from "../../index";
+import {Table} from "../../index";
 import {
     checkInlineEditing,
     OnCellValueChange,
@@ -131,7 +131,7 @@ export function CollectionTableInternal<M extends { [Key: string]: any },
                 title: subcollection.name,
                 width: 200,
                 dependencies: [],
-                builder: ({ entity }) => (
+                builder: ({entity}) => (
                     <Button color={"primary"}
                             onClick={(event) => {
                                 event.stopPropagation();
@@ -199,7 +199,7 @@ export function CollectionTableInternal<M extends { [Key: string]: any },
 
     }, [path, collection, schemaResolver]);
 
-    const { columns, popupFormField } = useBuildColumnsFromSchema({
+    let {columns, popupFormField} = useBuildColumnsFromSchema({
         schemaResolver,
         additionalColumns,
         displayedProperties,
@@ -209,7 +209,14 @@ export function CollectionTableInternal<M extends { [Key: string]: any },
         onCellValueChange: onCellChanged,
         uniqueFieldValidator
     });
-
+    console.log('columns', columns)
+    columns = columns.filter(c => {
+        if (c.property) {
+            return !c.property.hideInTable
+        } else {
+            return true
+        }
+    })
     const [searchString, setSearchString] = React.useState<string | undefined>();
 
     const {
@@ -245,18 +252,18 @@ export function CollectionTableInternal<M extends { [Key: string]: any },
 
     const clearFilter = useCallback(() => setFilterValues({}), []);
 
-    const buildIdColumn = useCallback(({ entry, size }: {
+    const buildIdColumn = useCallback(({entry, size}: {
         entry: Entity<M>,
         size: CollectionSize,
     }) => {
         if (tableRowActionsBuilder)
-            return tableRowActionsBuilder({ entity: entry, size });
+            return tableRowActionsBuilder({entity: entry, size});
         else
             return <CollectionRowActions entity={entry} size={size}/>;
 
     }, [tableRowActionsBuilder]);
 
-    const onRowClick = useCallback(({ rowData }: { rowData: Entity<M> }) => {
+    const onRowClick = useCallback(({rowData}: { rowData: Entity<M> }) => {
         if (checkInlineEditing(inlineEditing, rowData))
             return;
         return onEntityClick && onEntityClick(rowData);

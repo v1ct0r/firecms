@@ -139,6 +139,7 @@ export interface TableColumn<T> {
     sortable: boolean;
     width: number;
     filter?: TableColumnFilter;
+    property?: any;
     cellRenderer: (props: {
         columns: TableColumn<T>[];
         column: TableColumn<T>;
