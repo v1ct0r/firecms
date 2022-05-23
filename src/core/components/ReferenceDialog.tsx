@@ -149,6 +149,7 @@ export function ReferenceDialog(
 
 
     const toggleEntitySelection = (entity: Entity<any>) => {
+        console.log('tooooooogle1')
         let newValue;
         if (selectedEntities) {
             if (selectedEntities.map((e) => e.id).indexOf(entity.id) > -1) {

@@ -139,7 +139,6 @@ export function Table<T>({
 
         scrollToTop();
     };
-    const sel = useSelectionController()
 
     const navigationContext = useNavigation();
     const coll: any = navigationContext.getCollectionResolver<any>(collection.path)
@@ -152,8 +151,6 @@ export function Table<T>({
     const onCheckboxChange = () => {
         console.log("entityOrEntitiesentityOrEntities", entityOrEntities)
         console.log("multipleEntitiesmultipleEntities", multipleEntities)
-        console.log("selsel", sel)
-        console.log("sel.selectedEntities", sel.selectedEntities)
         console.log('{idColumnBuilder}', idColumnBuilder)
     }
 

@@ -252,7 +252,7 @@ export function CollectionTableInternal<M extends { [Key: string]: any },
         if (tableRowActionsBuilder)
             return tableRowActionsBuilder({ entity: entry, size });
         else
-            return <CollectionRowActions entity={entry} size={size}/>;
+            return <CollectionRowActions entity={entry} size={size} data={data}/>;
 
     }, [tableRowActionsBuilder]);
 

@@ -222,6 +222,9 @@ export declare type SelectionController<M = any> = {
     setSelectedEntities: (selectedEntities: Entity<M>[]) => void;
     isEntitySelected: (entity: Entity<M>) => boolean;
     toggleEntitySelection: (entity: Entity<M>) => void;
+    selectAll: (data: any) => void;
+    isAllSelected?: any;
+    isAllEntitiesSelected?: any;
 };
 /**
  * Filter conditions in a `Query.where()` clause are specified using the

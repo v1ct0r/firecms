@@ -14,7 +14,7 @@ export interface EntityCollectionViewProps<M extends {
      */
     collection: EntityCollection<M>;
 }
-export declare function useSelectionController<M = any>(): SelectionController;
+export declare function useSelectionController<M = any>(collection?: any): SelectionController;
 /**
  * This component is in charge of binding a datasource path with an {@link EntityCollection}
  * where it's configuration is defined. It includes an infinite scrolling table,

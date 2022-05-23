@@ -89,9 +89,12 @@ export const useTableStyles = makeStyles<Theme>(theme => createStyles({
  *
  * @param entity
  * @param isSelected
+ * @param isAllSelected
  * @param selectionEnabled
  * @param size
  * @param toggleEntitySelection
+ * @param data
+ * @param selectAll
  * @param onCopyClicked
  * @param onEditClicked
  * @param onDeleteClicked
@@ -102,22 +105,28 @@ export const useTableStyles = makeStyles<Theme>(theme => createStyles({
 export function CollectionRowActions<M extends { [Key: string]: any }>({
                                                                            entity,
                                                                            isSelected,
+                                                                           isAllSelected,
                                                                            selectionEnabled,
                                                                            size,
                                                                            toggleEntitySelection,
+                                                                           selectAll,
                                                                            onCopyClicked,
                                                                            onEditClicked,
-                                                                           onDeleteClicked
+                                                                           onDeleteClicked,
+                                                                           data
                                                                        }:
                                                                            {
                                                                                entity: Entity<M>,
                                                                                size: CollectionSize,
                                                                                isSelected?: boolean,
+                                                                               isAllSelected?: any,
                                                                                selectionEnabled?: boolean,
                                                                                toggleEntitySelection?: (selectedEntity: Entity<M>) => void
+                                                                               selectAll?: (data: any) => void
                                                                                onEditClicked?: (selectedEntity: Entity<M>) => void,
                                                                                onCopyClicked?: (selectedEntity: Entity<M>) => void,
                                                                                onDeleteClicked?: (selectedEntity: Entity<M>) => void,
+                                                                               data?: any
                                                                            }) {
 
     const editEnabled = Boolean(onEditClicked);
@@ -140,6 +149,12 @@ export function CollectionRowActions<M extends { [Key: string]: any }>({
     const onCheckboxChange = (event: React.ChangeEvent) => {
         if (toggleEntitySelection)
             toggleEntitySelection(entity);
+        event.stopPropagation();
+    };
+    const onCheckboxChange1 = (event: React.ChangeEvent) => {
+        if (selectAll) {
+            selectAll(entity)
+        }
         event.stopPropagation();
     };
 
@@ -180,12 +195,20 @@ export function CollectionRowActions<M extends { [Key: string]: any }>({
                         }
                         <span className={classes.verticalLine}></span>
                         {selectionEnabled &&
-                            <Tooltip title={`Select ${entity.id}`}>
-                                <Checkbox
-                                    checked={isSelected}
-                                    onChange={onCheckboxChange}
-                                />
-                            </Tooltip>}
+                            <div>
+                                <Tooltip title={`Select 1asd ${entity.id}`}>
+                                    <Checkbox
+                                        checked={isSelected}
+                                        onChange={onCheckboxChange}
+                                    />
+                                </Tooltip>
+                                <Tooltip title={`Select All`} className={'select-all'}>
+                                    <Checkbox
+                                        checked={isAllSelected}
+                                        onChange={onCheckboxChange1}
+                                    />
+                                </Tooltip>
+                            </div>}
                     </div>
                     )
                 </div>}

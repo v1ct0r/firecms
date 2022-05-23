@@ -18,4 +18,4 @@ export declare const useTableStyles: (props?: any) => import("@mui/styles").Clas
  * @see EntityCollectionView
  * @category Components
  */
-export declare function Table<T>({ data, idColumnBuilder, onResetPagination, onEndReached, size, columns, frozenIdColumn, onRowClick, onColumnResize, filter, checkFilterCombination, onFilterUpdate, sortBy, error, emptyMessage, onSortByUpdate, loading, hoverRow }: TableProps<T>): import("@emotion/react/jsx-runtime").JSX.Element;
+export declare function Table<T>({ data, idColumnBuilder, onResetPagination, onEndReached, size, columns, frozenIdColumn, onRowClick, onColumnResize, filter, checkFilterCombination, collection, onFilterUpdate, sortBy, error, emptyMessage, onSortByUpdate, loading, hoverRow }: TableProps<T>): import("@emotion/react/jsx-runtime").JSX.Element;

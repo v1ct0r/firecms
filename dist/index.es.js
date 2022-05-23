@@ -4,7 +4,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import * as locales from 'date-fns/locale';
 import * as React from 'react';
 import React__default, { useState, useEffect, useRef, useCallback, useMemo, useContext, createElement, useLayoutEffect, lazy, Suspense } from 'react';
-import { Snackbar, Alert, useMediaQuery, Tooltip, Skeleton, Box, Typography, Chip, IconButton, Table as Table$1, TableBody, TableRow, TableCell as TableCell$1, Link, CardMedia, Grid, List, ListItem, Paper, lighten, darken, Divider, TableContainer, FormControl, alpha as alpha$1, useTheme, Select as Select$1, InputBase as InputBase$1, MenuItem, Hidden, CircularProgress, Checkbox, Menu, ListItemIcon, ListItemText, TextareaAutosize, Input, Switch, TextField as TextField$1, Button, FormHelperText, InputLabel, FormControlLabel, FilledInput, InputAdornment, Container, Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, Popover, CardActionArea, CardContent, CardActions, OutlinedInput, Badge, Slide, AppBar, Toolbar, Breadcrumbs, Avatar, Drawer as Drawer$1, useForkRef, debounce, ownerWindow, Modal, Backdrop, Tabs, Tab, createTheme, Fade, CssBaseline, ThemeProvider } from '@mui/material';
+import { Snackbar, Alert, useMediaQuery, Tooltip, Skeleton, Box, Typography, Chip, IconButton, Table as Table$1, TableBody, TableRow, TableCell as TableCell$1, Link, CardMedia, Grid, List, ListItem, Paper, lighten, darken, Divider, TableContainer, FormControl, alpha as alpha$1, useTheme, Select as Select$1, InputBase as InputBase$1, MenuItem, Hidden, CircularProgress, Checkbox, TextareaAutosize, ListItemText, Input, Switch, TextField as TextField$1, Button, FormHelperText, InputLabel, FormControlLabel, FilledInput, InputAdornment, Container, Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, Popover, CardActionArea, CardContent, CardActions, OutlinedInput, Badge, Slide, AppBar, Toolbar, Breadcrumbs, Avatar, Drawer as Drawer$1, useForkRef, debounce, ownerWindow, Modal, Backdrop, Tabs, Tab, createTheme, Fade, CssBaseline, ThemeProvider } from '@mui/material';
 import { jsxs, jsx, Fragment } from '@emotion/react/jsx-runtime';
 import { useLocation, useNavigate, Link as Link$1, Route, Routes, NavLink, UNSAFE_NavigationContext, BrowserRouter } from 'react-router-dom';
 import hash from 'object-hash';
@@ -17,7 +17,7 @@ import InputBase from '@mui/material/InputBase';
 import { alpha, darken as darken$1 } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
-import { CheckBox, CheckBoxOutlineBlank, KeyboardTab, MoreVert, Delete, FileCopy, Add } from '@mui/icons-material';
+import { CheckBox, CheckBoxOutlineBlank, KeyboardTab, Add, Delete } from '@mui/icons-material';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
@@ -4005,28 +4005,39 @@ const useTableStyles$1 = makeStyles((theme) => createStyles({
     textAlign: "center",
     textOverflow: "ellipsis",
     overflow: "hidden"
+  },
+  selectContainer: {
+    display: "flex",
+    justifyContent: "space-around"
+  },
+  verticalLine: {
+    width: "1px",
+    backgroundColor: "#dfdfdf",
+    height: "55px"
   }
 }));
 function CollectionRowActions({
   entity,
   isSelected,
+  isAllSelected,
   selectionEnabled,
   size,
   toggleEntitySelection,
+  selectAll,
   onCopyClicked,
   onEditClicked,
-  onDeleteClicked
+  onDeleteClicked,
+  data
 }) {
   const editEnabled = Boolean(onEditClicked);
-  const copyEnabled = Boolean(onCopyClicked);
   const deleteEnabled = Boolean(onDeleteClicked);
   const classes = useTableStyles$1();
   const [anchorEl, setAnchorEl] = React__default.useState(null);
-  const openMenu = useCallback((event) => {
+  useCallback((event) => {
     setAnchorEl(event.currentTarget);
     event.stopPropagation();
   }, [setAnchorEl]);
-  const closeMenu = useCallback(() => {
+  useCallback(() => {
     setAnchorEl(null);
   }, [setAnchorEl]);
   const onCheckboxChange = (event) => {
@@ -4034,13 +4045,19 @@ function CollectionRowActions({
       toggleEntitySelection(entity);
     event.stopPropagation();
   };
-  const onDeleteClick = useCallback((event) => {
+  const onCheckboxChange1 = (event) => {
+    if (selectAll) {
+      selectAll(entity);
+    }
+    event.stopPropagation();
+  };
+  useCallback((event) => {
     event.stopPropagation();
     if (onDeleteClicked)
       onDeleteClicked(entity);
     setAnchorEl(null);
   }, [entity, onDeleteClicked, setAnchorEl]);
-  const onCopyClick = useCallback((event) => {
+  useCallback((event) => {
     event.stopPropagation();
     if (onCopyClicked)
       onCopyClicked(entity);
@@ -4050,48 +4067,38 @@ function CollectionRowActions({
     className: classes.cellButtonsWrap,
     children: [(editEnabled || deleteEnabled || selectionEnabled) && /* @__PURE__ */ jsxs("div", {
       className: classes.cellButtons,
-      children: [editEnabled && /* @__PURE__ */ jsx(Tooltip, {
-        title: `Edit ${entity.id}`,
-        children: /* @__PURE__ */ jsx(IconButton, {
-          onClick: (event) => {
-            event.stopPropagation();
-            if (onEditClicked)
-              onEditClicked(entity);
-          },
-          size: "large",
-          children: /* @__PURE__ */ jsx(KeyboardTab, {})
-        })
-      }), selectionEnabled && /* @__PURE__ */ jsx(Tooltip, {
-        title: `Select ${entity.id}`,
-        children: /* @__PURE__ */ jsx(Checkbox, {
-          checked: isSelected,
-          onChange: onCheckboxChange
-        })
-      }), (copyEnabled || deleteEnabled) && /* @__PURE__ */ jsx(IconButton, {
-        onClick: openMenu,
-        size: "large",
-        children: /* @__PURE__ */ jsx(MoreVert, {})
-      }), (copyEnabled || deleteEnabled) && /* @__PURE__ */ jsxs(Menu, {
-        anchorEl,
-        open: Boolean(anchorEl),
-        onClose: closeMenu,
-        elevation: 2,
-        children: [deleteEnabled && /* @__PURE__ */ jsxs(MenuItem, {
-          onClick: onDeleteClick,
-          children: [/* @__PURE__ */ jsx(ListItemIcon, {
-            children: /* @__PURE__ */ jsx(Delete, {})
-          }), /* @__PURE__ */ jsx(ListItemText, {
-            primary: "Delete"
-          })]
-        }), copyEnabled && /* @__PURE__ */ jsxs(MenuItem, {
-          onClick: onCopyClick,
-          children: [/* @__PURE__ */ jsx(ListItemIcon, {
-            children: /* @__PURE__ */ jsx(FileCopy, {})
-          }), /* @__PURE__ */ jsx(ListItemText, {
-            primary: "Copy"
+      children: ["(", /* @__PURE__ */ jsxs("div", {
+        className: classes.selectContainer,
+        children: [editEnabled && /* @__PURE__ */ jsx(Tooltip, {
+          title: `Edit ${entity.id}`,
+          children: /* @__PURE__ */ jsx(IconButton, {
+            onClick: (event) => {
+              event.stopPropagation();
+              if (onEditClicked)
+                onEditClicked(entity);
+            },
+            size: "large",
+            children: /* @__PURE__ */ jsx(KeyboardTab, {})
+          })
+        }), /* @__PURE__ */ jsx("span", {
+          className: classes.verticalLine
+        }), selectionEnabled && /* @__PURE__ */ jsxs("div", {
+          children: [/* @__PURE__ */ jsx(Tooltip, {
+            title: `Select 1asd ${entity.id}`,
+            children: /* @__PURE__ */ jsx(Checkbox, {
+              checked: isSelected,
+              onChange: onCheckboxChange
+            })
+          }), /* @__PURE__ */ jsx(Tooltip, {
+            title: `Select All`,
+            className: "select-all",
+            children: /* @__PURE__ */ jsx(Checkbox, {
+              checked: isAllSelected,
+              onChange: onCheckboxChange1
+            })
           })]
         })]
-      })]
+      }), ")"]
     }), size !== "xs" && /* @__PURE__ */ jsx("div", {
       className: classes.cellButtonsId,
       children: entity ? /* @__PURE__ */ jsxs(Typography, {
@@ -9368,15 +9375,13 @@ function CollectionTableInternal({
     else
       return /* @__PURE__ */ jsx(CollectionRowActions, {
         entity: entry,
-        size: size2
+        size: size2,
+        data
       });
   }, [tableRowActionsBuilder]);
   const onRowClick = useCallback(({
     rowData
   }) => {
-    if (checkInlineEditing(inlineEditing, rowData))
-      return;
-    return onEntityClick && onEntityClick(rowData);
   }, [onEntityClick]);
   const updateSize = useCallback((size2) => {
     if (onSizeChanged)
@@ -9413,7 +9418,8 @@ function CollectionTableInternal({
       sortBy,
       onSortByUpdate: setSortBy,
       hoverRow,
-      checkFilterCombination: (filterValues2, sortBy2) => isFilterCombinationValid(filterValues2, filterCombinations, sortBy2)
+      checkFilterCombination: (filterValues2, sortBy2) => isFilterCombinationValid(filterValues2, filterCombinations, sortBy2),
+      collection
     }), popupFormField]
   });
 }
@@ -9499,6 +9505,7 @@ function ReferenceDialog({
     }
   };
   const toggleEntitySelection = (entity) => {
+    console.log("tooooooogle1");
     let newValue;
     if (selectedEntities) {
       if (selectedEntities.map((e) => e.id).indexOf(entity.id) > -1) {
@@ -10003,23 +10010,55 @@ function canDelete(permission, entity, authController, path, context) {
   return checkHasPermissionOnEntity(permission, entity, authController, path, context).delete ?? DEFAULT_PERMISSIONS.delete;
 }
 
-function useSelectionController() {
+function useSelectionController(collection) {
   const [selectedEntities, setSelectedEntities] = useState([]);
+  const collectionData = useCollectionFetch({
+    path: collection.path,
+    schemaResolver: collection.schemaResolver
+  });
   const toggleEntitySelection = useCallback((entity) => {
+    console.log("tooooooogle2", entity);
     let newValue;
     if (selectedEntities.map((e) => e.id).includes(entity.id)) {
       newValue = selectedEntities.filter((item) => item.id !== entity.id);
     } else {
       newValue = [...selectedEntities, entity];
     }
+    console.log("newValue A", newValue);
     setSelectedEntities(newValue);
   }, [selectedEntities]);
+  const selectAll = useCallback((d) => {
+    console.log("collection1", collection);
+    console.log("kjkkkkkkkk", collectionData);
+    console.log("selectedEntities A", selectedEntities);
+    let data = collectionData;
+    if (!data.data.length) {
+      data = collectionData;
+    }
+    if (selectedEntities.length === data.data.length && selectedEntities.length !== 0) {
+      setSelectedEntities([]);
+    } else {
+      if (data.data) {
+        const new1 = data.data;
+        setSelectedEntities(new1);
+      }
+    }
+    console.log("selectedEntities B", selectedEntities);
+  }, [selectedEntities]);
   const isEntitySelected = useCallback((entity) => selectedEntities.map((e) => e.id).includes(entity.id), [selectedEntities]);
+  const isAllEntitiesSelected = useCallback(() => {
+    console.log("selectedEntities.length1", selectedEntities.length);
+    console.log("data1.data.length1", collectionData.data.length);
+    console.log("selectedEntities.length === data1.data.length", selectedEntities.length === collectionData.data.length);
+    return selectedEntities.length === collectionData.data.length && selectedEntities.length !== 0;
+  }, [selectedEntities, collectionData]);
   return {
     selectedEntities,
     setSelectedEntities,
     isEntitySelected,
-    toggleEntitySelection
+    isAllEntitiesSelected,
+    toggleEntitySelection,
+    selectAll
   };
 }
 function EntityCollectionView$1({
@@ -10048,11 +10087,13 @@ function EntityCollectionView$1({
   const selectionEnabled = collection.selectionEnabled === void 0 || collection.selectionEnabled;
   const hoverRow = collection.inlineEditing !== void 0 && !collection.inlineEditing;
   const [anchorEl, setAnchorEl] = React__default.useState(null);
-  const selectionController = useSelectionController();
+  const selectionController = useSelectionController(collection);
   const usedSelectionController = collection.selectionController ?? selectionController;
   const {
     selectedEntities,
     toggleEntitySelection,
+    selectAll,
+    isAllEntitiesSelected,
     isEntitySelected,
     setSelectedEntities
   } = usedSelectionController;
@@ -10181,6 +10222,7 @@ function EntityCollectionView$1({
     size
   }) => {
     const isSelected = isEntitySelected(entity);
+    const isAllSelected = isAllEntitiesSelected();
     const createEnabled = canCreate(collection.permissions, authController, path, context);
     const editEnabled = canEdit(collection.permissions, entity, authController, path, context);
     const deleteEnabled = canDelete(collection.permissions, entity, authController, path, context);
@@ -10214,9 +10256,11 @@ function EntityCollectionView$1({
     return /* @__PURE__ */ jsx(CollectionRowActions, {
       entity,
       isSelected,
+      isAllSelected,
       selectionEnabled,
       size,
       toggleEntitySelection,
+      selectAll,
       onEditClicked,
       onCopyClicked: createEnabled ? onCopyClicked : void 0,
       onDeleteClicked: deleteEnabled ? setDeleteEntityClicked : void 0
@@ -10971,6 +11015,7 @@ function Table({
   onColumnResize,
   filter,
   checkFilterCombination,
+  collection,
   onFilterUpdate,
   sortBy,
   error,
@@ -11011,6 +11056,17 @@ function Table({
     }
     scrollToTop();
   };
+  const navigationContext = useNavigation();
+  const coll = navigationContext.getCollectionResolver(collection.path);
+  console.log("collcollcoll", coll);
+  console.log("selectionController", coll.selectionController);
+  const [entityOrEntities, setUsedEntityOrEntities] = React__default.useState();
+  const [multipleEntities, setMultipleEntities] = React__default.useState();
+  const onCheckboxChange = () => {
+    console.log("entityOrEntitiesentityOrEntities", entityOrEntities);
+    console.log("multipleEntitiesmultipleEntities", multipleEntities);
+    console.log("{idColumnBuilder}", idColumnBuilder);
+  };
   const resetSort = () => {
     if (onSortByUpdate)
       onSortByUpdate(void 0);
@@ -11021,6 +11077,7 @@ function Table({
       tableRef.current.scrollToTop(0);
     }
   };
+  console.log("idColumnBuilder", idColumnBuilder);
   const onScroll = ({
     scrollTop,
     scrollUpdateWasRequested
@@ -11068,14 +11125,25 @@ function Table({
       }
     };
     return /* @__PURE__ */ jsx(ErrorBoundary, {
-      children: columnIndex === 0 ? /* @__PURE__ */ jsx("div", {
+      children: columnIndex === 0 ? /* @__PURE__ */ jsxs("div", {
         className: classes.header,
         style: {
           display: "flex",
           justifyContent: "center",
-          alignItems: "center"
+          alignItems: "center",
+          width: "100%",
+          padding: 0
         },
-        children: "ID"
+        children: [/* @__PURE__ */ jsx("p", {
+          style: {
+            margin: 0,
+            width: "45px"
+          },
+          children: "ID"
+        }), /* @__PURE__ */ jsx(Checkbox, {
+          checked: false,
+          onChange: onCheckboxChange
+        })]
       }) : /* @__PURE__ */ jsx(TableHeader, {
         onFilterUpdate: onInternalFilterUpdate,
         filter: filterForThisProperty,
