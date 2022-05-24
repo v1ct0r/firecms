@@ -225,6 +225,7 @@ export declare type SelectionController<M = any> = {
     selectAll: (data: any) => void;
     isAllSelected?: any;
     isAllEntitiesSelected?: any;
+    collectionData?: any;
 };
 /**
  * Filter conditions in a `Query.where()` clause are specified using the

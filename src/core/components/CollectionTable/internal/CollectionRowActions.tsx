@@ -1,6 +1,6 @@
-import {CollectionSize, Entity} from "../../../../models";
+import { CollectionSize, Entity } from "../../../../models";
 
-import React, {MouseEvent, useCallback} from "react";
+import React, { MouseEvent, useCallback } from "react";
 import {
     alpha,
     Checkbox,
@@ -14,7 +14,7 @@ import {
     Tooltip,
     Typography
 } from "@mui/material";
-import {Delete, FileCopy, KeyboardTab, MoreVert} from "@mui/icons-material";
+import { Delete, FileCopy, KeyboardTab, MoreVert } from "@mui/icons-material";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
 
@@ -74,13 +74,19 @@ export const useTableStyles = makeStyles<Theme>(theme => createStyles({
         overflow: "hidden"
     },
     selectContainer: {
-        display: 'flex',
-        justifyContent: 'space-around'
+        display: "flex",
+        justifyContent: "space-around"
     },
     verticalLine: {
-        width: '1px',
-        backgroundColor: '#dfdfdf',
-        height: '55px',
+        width: "1px",
+        backgroundColor: "#dfdfdf",
+        height: "55px"
+    },
+    "select-all": {
+        position: "absolute",
+        top: "-100px",
+        right: "-100px",
+        opacity: "0"
     }
 }));
 
@@ -196,13 +202,13 @@ export function CollectionRowActions<M extends { [Key: string]: any }>({
                         <span className={classes.verticalLine}></span>
                         {selectionEnabled &&
                             <div>
-                                <Tooltip title={`Select 1asd ${entity.id}`}>
+                                <Tooltip title={`Select 1asd ${entity.id}`} style={{ marginTop: "5px" }}>
                                     <Checkbox
                                         checked={isSelected}
                                         onChange={onCheckboxChange}
                                     />
                                 </Tooltip>
-                                <Tooltip title={`Select All`} className={'select-all'}>
+                                <Tooltip title={"Select All"} className={classes["select-all"] + " select-all"}>
                                     <Checkbox
                                         checked={isAllSelected}
                                         onChange={onCheckboxChange1}

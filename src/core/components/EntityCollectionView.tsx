@@ -55,62 +55,39 @@ export interface EntityCollectionViewProps<M extends { [Key: string]: any }> {
 export function useSelectionController<M = any>(collection?: any): SelectionController {
 
     const [selectedEntities, setSelectedEntities] = useState<Entity<M>[]>([]);
-    const collectionData = useCollectionFetch({
+    let collectionData = useCollectionFetch({
         path: collection.path,
         schemaResolver: collection.schemaResolver
     })
+
+    collectionData = useCollectionFetch({
+        path: collection.path,
+        schemaResolver: collection.schemaResolver
+    })
+
     const toggleEntitySelection = useCallback((entity: Entity<M>) => {
-        console.log("tooooooogle2", entity)
         let newValue;
         if (selectedEntities.map(e => e.id).includes(entity.id)) {
             newValue = selectedEntities.filter((item: Entity<M>) => item.id !== entity.id);
         } else {
             newValue = [...selectedEntities, entity];
         }
-        console.log("newValue A", newValue)
         setSelectedEntities(newValue);
     }, [selectedEntities]);
 
     const selectAll = useCallback((d: any) => {
-        console.log("collection1", collection)
-        console.log("kjkkkkkkkk", collectionData)
-        console.log("selectedEntities A", selectedEntities)
-        let data = collectionData
-
-        if (!data.data.length) {
-            data = collectionData
-        }
-        if ((selectedEntities.length === data.data.length) && selectedEntities.length !== 0) {
+        if ((selectedEntities.length === collectionData.data.length) && selectedEntities.length !== 0) {
             setSelectedEntities([]);
         } else {
-            if (data.data) {
-                // data1.data.forEach((d: any) => {
-                //     console.log("DDDD!", d)
-                //     const newValue: any = [...selectedEntities, d];
-                //     console.log('newValue B', newValue)
-                const new1: any = data.data
+            if (collectionData.data) {
+                const new1: any = collectionData.data
                 setSelectedEntities(new1);
-                // })
             }
         }
-
-        console.log("selectedEntities B", selectedEntities)
-        // let newValue;
-        // if (selectedEntities.map(e => e.id).includes(entity.id)) {
-        //     newValue = selectedEntities.filter((item: Entity<M>) => item.id !== entity.id);
-        // } else {
-        //     newValue = [...selectedEntities, entity];
-        // }
-        // setSelectedEntities(newValue);
     }, [selectedEntities]);
 
     const isEntitySelected = useCallback((entity: Entity<M>) => selectedEntities.map(e => e.id).includes(entity.id), [selectedEntities]);
-    const isAllEntitiesSelected = useCallback(() => {
-        console.log("selectedEntities.length1", selectedEntities.length)
-        console.log("data1.data.length1", collectionData.data.length)
-        console.log("selectedEntities.length === data1.data.length", selectedEntities.length === collectionData.data.length)
-        return (selectedEntities.length === collectionData.data.length) && selectedEntities.length !== 0
-    }, [selectedEntities, collectionData]);
+    const isAllEntitiesSelected = useCallback(() => (selectedEntities.length === collectionData.data.length) && selectedEntities.length !== 0, [selectedEntities, collectionData]);
 
     return {
         selectedEntities,
@@ -180,7 +157,7 @@ export function EntityCollectionView<M extends { [Key: string]: any }>({
     const hoverRow = collection.inlineEditing !== undefined && !collection.inlineEditing;
 
     const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
-//
+
     const selectionController = useSelectionController<M>(collection);
     const usedSelectionController = collection.selectionController ?? selectionController;
     const {
@@ -189,7 +166,8 @@ export function EntityCollectionView<M extends { [Key: string]: any }>({
         selectAll,
         isAllEntitiesSelected,
         isEntitySelected,
-        setSelectedEntities
+        setSelectedEntities,
+        collectionData
     } = usedSelectionController;
 
     useEffect(() => {
