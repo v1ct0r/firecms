@@ -22,7 +22,7 @@ import {
     PropertyTableCell
 } from "./internal/PropertyTableCell";
 import { ErrorBoundary } from "../../internal/ErrorBoundary";
-import { useFireCMSContext } from "../../../hooks";
+import { useAuthController, useFireCMSContext } from "../../../hooks";
 import { PopupFormField } from "./internal/popup_field/PopupFormField";
 import { TableColumn, TableColumnFilter, TableEnumValues } from "../../index";
 import { getIconForProperty } from "../../util/property_icons";
@@ -129,15 +129,15 @@ type SelectedCellProps<M> =
 
 
 export function useBuildColumnsFromSchema<M, AdditionalKey extends string, UserType>({
-                                                                                      schemaResolver,
-                                                                                      additionalColumns,
-                                                                                      displayedProperties,
-                                                                                      path,
-                                                                                      inlineEditing,
-                                                                                      size,
-                                                                                      onCellValueChange,
-                                                                                      uniqueFieldValidator
-                                                                                  }: ColumnsFromSchemaProps<M, AdditionalKey, UserType>
+                                                                                         schemaResolver,
+                                                                                         additionalColumns,
+                                                                                         displayedProperties,
+                                                                                         path,
+                                                                                         inlineEditing,
+                                                                                         size,
+                                                                                         onCellValueChange,
+                                                                                         uniqueFieldValidator
+                                                                                     }: ColumnsFromSchemaProps<M, AdditionalKey, UserType>
 ): { columns: TableColumn<M>[], popupFormField: React.ReactElement } {
 
     const context: FireCMSContext<UserType> = useFireCMSContext();
@@ -231,6 +231,24 @@ export function useBuildColumnsFromSchema<M, AdditionalKey extends string, UserT
         path
     }), [schemaResolver, path]);
 
+
+    const auth = useAuthController()
+    const isGlobalAdmin = auth.extra.admin
+
+    const newProps: any = {}
+    Object.keys(resolvedSchema.properties).forEach(k => {
+        if (resolvedSchema.properties[k].onlyForGlobalAdmin) {
+            if (isGlobalAdmin) {
+                newProps[k] = resolvedSchema.properties[k]
+            }
+        } else {
+            newProps[k] = resolvedSchema.properties[k]
+        }
+    })
+
+    resolvedSchema.properties = newProps
+
+
     const propertyCellRenderer = ({
                                       column,
                                       columnIndex,
@@ -315,7 +333,7 @@ export function useBuildColumnsFromSchema<M, AdditionalKey extends string, UserT
                 ? ({ name, value, property }) => uniqueFieldValidator({
                     name, value, property, entityId: entity.id
                 })
-: undefined;
+                : undefined;
 
             const validation = mapPropertyToYup({
                 property,
@@ -351,7 +369,7 @@ export function useBuildColumnsFromSchema<M, AdditionalKey extends string, UserT
                     entityId={entity.id}
                     entityValues={entity.values}/>
                 : <SkeletonComponent property={property}
-                                   size={getPreviewSizeFrom(size)}/>;
+                                     size={getPreviewSizeFrom(size)}/>;
         }
 
 
@@ -398,7 +416,7 @@ export function useBuildColumnsFromSchema<M, AdditionalKey extends string, UserT
 
     const allColumns: TableColumn<M>[] = (Object.keys(resolvedSchema.properties) as (keyof M)[])
         .map((key) => {
-            const property: Property<any>|undefined = resolvedSchema.properties[key];
+            const property: Property<any> | undefined = resolvedSchema.properties[key];
 
             return ({
                 key: key as string,

@@ -117,6 +117,11 @@ interface BaseProperty {
      */
     hideInTable?: boolean;
 
+    /**
+     * Hide property if user not a global admin
+     */
+    onlyForGlobalAdmin?: boolean;
+
 }
 
 /**
