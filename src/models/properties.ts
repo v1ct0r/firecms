@@ -112,6 +112,15 @@ interface BaseProperty {
      * Rules for validating this property
      */
     validation?: PropertyValidationSchema;
+    /**
+     * Hide entity in table
+     */
+    hideInTable?: boolean;
+
+    /**
+     * Hide property if user not a global admin
+     */
+    onlyForGlobalAdmin?: boolean;
 
 }
 

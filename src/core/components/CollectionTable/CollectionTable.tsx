@@ -199,7 +199,7 @@ export function CollectionTableInternal<M extends { [Key: string]: any },
 
     }, [path, collection, schemaResolver]);
 
-    const { columns, popupFormField } = useBuildColumnsFromSchema({
+    let { columns, popupFormField } = useBuildColumnsFromSchema({
         schemaResolver,
         additionalColumns,
         displayedProperties,
@@ -209,7 +209,14 @@ export function CollectionTableInternal<M extends { [Key: string]: any },
         onCellValueChange: onCellChanged,
         uniqueFieldValidator
     });
-
+    console.log('columns', columns)
+    columns = columns.filter(c => {
+        if (c.property) {
+            return !c.property.hideInTable
+        } else {
+            return true
+        }
+    })
     const [searchString, setSearchString] = React.useState<string | undefined>();
 
     const {
