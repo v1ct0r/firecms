@@ -72,6 +72,21 @@ export const useTableStyles = makeStyles<Theme>(theme => createStyles({
         textAlign: "center",
         textOverflow: "ellipsis",
         overflow: "hidden"
+    },
+    selectContainer: {
+        display: "flex",
+        justifyContent: "space-around"
+    },
+    verticalLine: {
+        width: "1px",
+        backgroundColor: "#dfdfdf",
+        height: "55px"
+    },
+    "select-all": {
+        position: "absolute",
+        top: "-100px",
+        right: "-100px",
+        opacity: "0"
     }
 }));
 
@@ -80,9 +95,12 @@ export const useTableStyles = makeStyles<Theme>(theme => createStyles({
  *
  * @param entity
  * @param isSelected
+ * @param isAllSelected
  * @param selectionEnabled
  * @param size
  * @param toggleEntitySelection
+ * @param data
+ * @param selectAll
  * @param onCopyClicked
  * @param onEditClicked
  * @param onDeleteClicked
@@ -93,22 +111,28 @@ export const useTableStyles = makeStyles<Theme>(theme => createStyles({
 export function CollectionRowActions<M extends { [Key: string]: any }>({
                                                                            entity,
                                                                            isSelected,
+                                                                           isAllSelected,
                                                                            selectionEnabled,
                                                                            size,
                                                                            toggleEntitySelection,
+                                                                           selectAll,
                                                                            onCopyClicked,
                                                                            onEditClicked,
-                                                                           onDeleteClicked
+                                                                           onDeleteClicked,
+                                                                           data
                                                                        }:
                                                                            {
                                                                                entity: Entity<M>,
                                                                                size: CollectionSize,
                                                                                isSelected?: boolean,
+                                                                               isAllSelected?: any,
                                                                                selectionEnabled?: boolean,
                                                                                toggleEntitySelection?: (selectedEntity: Entity<M>) => void
+                                                                               selectAll?: (data: any) => void
                                                                                onEditClicked?: (selectedEntity: Entity<M>) => void,
                                                                                onCopyClicked?: (selectedEntity: Entity<M>) => void,
                                                                                onDeleteClicked?: (selectedEntity: Entity<M>) => void,
+                                                                               data?: any
                                                                            }) {
 
     const editEnabled = Boolean(onEditClicked);
@@ -133,6 +157,12 @@ export function CollectionRowActions<M extends { [Key: string]: any }>({
             toggleEntitySelection(entity);
         event.stopPropagation();
     };
+    const onCheckboxChange1 = (event: React.ChangeEvent) => {
+        if (selectAll) {
+            selectAll(entity)
+        }
+        event.stopPropagation();
+    };
 
     const onDeleteClick = useCallback((event: MouseEvent) => {
         event.stopPropagation();
@@ -152,60 +182,42 @@ export function CollectionRowActions<M extends { [Key: string]: any }>({
         <div className={classes.cellButtonsWrap}>
 
             {(editEnabled || deleteEnabled || selectionEnabled) &&
-            <div className={classes.cellButtons}
-            >
-                {editEnabled &&
-                <Tooltip title={`Edit ${entity.id}`}>
-                    <IconButton
-                        onClick={(event: MouseEvent) => {
-                            event.stopPropagation();
-                            if (onEditClicked)
-                                onEditClicked(entity);
-                        }}
-                        size="large">
-                        <KeyboardTab/>
-                    </IconButton>
-                </Tooltip>
-                }
-
-                {selectionEnabled &&
-                <Tooltip title={`Select ${entity.id}`}>
-                    <Checkbox
-                        checked={isSelected}
-                        onChange={onCheckboxChange}
-                    />
-                </Tooltip>}
-
-                {(copyEnabled || deleteEnabled) &&
-                <IconButton onClick={openMenu} size="large">
-                    <MoreVert/>
-                </IconButton>
-                }
-
-                {(copyEnabled || deleteEnabled) && <Menu
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={closeMenu}
-                    elevation={2}
+                <div className={classes.cellButtons}
                 >
-                    {deleteEnabled && <MenuItem onClick={onDeleteClick}>
-                        <ListItemIcon>
-                            <Delete/>
-                        </ListItemIcon>
-                        <ListItemText primary={"Delete"}/>
-                    </MenuItem>}
-
-                    {copyEnabled && <MenuItem onClick={onCopyClick}>
-                        <ListItemIcon>
-                            <FileCopy/>
-                        </ListItemIcon>
-                        <ListItemText primary="Copy"/>
-                    </MenuItem>}
-
-                </Menu>}
-
-
-            </div>}
+                    (
+                    <div className={classes.selectContainer}>
+                        {editEnabled &&
+                            <Tooltip title={`Edit ${entity.id}`}>
+                                <IconButton
+                                    onClick={(event: MouseEvent) => {
+                                        event.stopPropagation();
+                                        if (onEditClicked)
+                                            onEditClicked(entity);
+                                    }}
+                                    size="large">
+                                    <KeyboardTab/>
+                                </IconButton>
+                            </Tooltip>
+                        }
+                        <span className={classes.verticalLine}></span>
+                        {selectionEnabled &&
+                            <div>
+                                <Tooltip title={`Select 1asd ${entity.id}`} style={{ marginTop: "5px" }}>
+                                    <Checkbox
+                                        checked={isSelected}
+                                        onChange={onCheckboxChange}
+                                    />
+                                </Tooltip>
+                                <Tooltip title={"Select All"} className={classes["select-all"] + " select-all"}>
+                                    <Checkbox
+                                        checked={isAllSelected}
+                                        onChange={onCheckboxChange1}
+                                    />
+                                </Tooltip>
+                            </div>}
+                    </div>
+                    )
+                </div>}
 
             {size !== "xs" && (
                 <div className={classes.cellButtonsId}>

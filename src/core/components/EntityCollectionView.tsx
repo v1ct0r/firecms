@@ -28,7 +28,7 @@ import { ExportButton } from "./CollectionTable/internal/ExportButton";
 import { canCreate, canDelete, canEdit } from "../util/permissions";
 import { Markdown } from "../../preview";
 import {
-    useAuthController,
+    useAuthController, useCollectionFetch,
     useFireCMSContext,
     useNavigation,
     useSideEntityController
@@ -52,9 +52,18 @@ export interface EntityCollectionViewProps<M extends { [Key: string]: any }> {
 }
 
 
-export function useSelectionController<M = any>(): SelectionController {
+export function useSelectionController<M = any>(collection?: any): SelectionController {
 
     const [selectedEntities, setSelectedEntities] = useState<Entity<M>[]>([]);
+    let collectionData = useCollectionFetch({
+        path: collection.path,
+        schemaResolver: collection.schemaResolver
+    })
+
+    collectionData = useCollectionFetch({
+        path: collection.path,
+        schemaResolver: collection.schemaResolver
+    })
 
     const toggleEntitySelection = useCallback((entity: Entity<M>) => {
         let newValue;
@@ -66,13 +75,27 @@ export function useSelectionController<M = any>(): SelectionController {
         setSelectedEntities(newValue);
     }, [selectedEntities]);
 
+    const selectAll = useCallback((d: any) => {
+        if ((selectedEntities.length === collectionData.data.length) && selectedEntities.length !== 0) {
+            setSelectedEntities([]);
+        } else {
+            if (collectionData.data) {
+                const new1: any = collectionData.data
+                setSelectedEntities(new1);
+            }
+        }
+    }, [selectedEntities]);
+
     const isEntitySelected = useCallback((entity: Entity<M>) => selectedEntities.map(e => e.id).includes(entity.id), [selectedEntities]);
+    const isAllEntitiesSelected = useCallback(() => (selectedEntities.length === collectionData.data.length) && selectedEntities.length !== 0, [selectedEntities, collectionData]);
 
     return {
         selectedEntities,
         setSelectedEntities,
         isEntitySelected,
-        toggleEntitySelection
+        isAllEntitiesSelected,
+        toggleEntitySelection,
+        selectAll
     };
 }
 
@@ -135,13 +158,16 @@ export function EntityCollectionView<M extends { [Key: string]: any }>({
 
     const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
-    const selectionController = useSelectionController<M>();
+    const selectionController = useSelectionController<M>(collection);
     const usedSelectionController = collection.selectionController ?? selectionController;
     const {
         selectedEntities,
         toggleEntitySelection,
+        selectAll,
+        isAllEntitiesSelected,
         isEntitySelected,
-        setSelectedEntities
+        setSelectedEntities,
+        collectionData
     } = usedSelectionController;
 
     useEffect(() => {
@@ -246,29 +272,29 @@ export function EntityCollectionView<M extends { [Key: string]: any }>({
             </Typography>
 
             {collection.description &&
-            <Popover
-                id={"info-dialog"}
-                open={open}
-                anchorEl={anchorEl}
-                elevation={1}
-                onClose={() => {
-                    setAnchorEl(null);
-                }}
-                anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "center"
-                }}
-                transformOrigin={{
-                    vertical: "top",
-                    horizontal: "center"
-                }}
-            >
+                <Popover
+                    id={"info-dialog"}
+                    open={open}
+                    anchorEl={anchorEl}
+                    elevation={1}
+                    onClose={() => {
+                        setAnchorEl(null);
+                    }}
+                    anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "center"
+                    }}
+                    transformOrigin={{
+                        vertical: "top",
+                        horizontal: "center"
+                    }}
+                >
 
-                <Box m={2}>
-                    <Markdown source={collection.description}/>
-                </Box>
+                    <Box m={2}>
+                        <Markdown source={collection.description}/>
+                    </Box>
 
-            </Popover>
+                </Popover>
             }
 
         </div>
@@ -280,6 +306,8 @@ export function EntityCollectionView<M extends { [Key: string]: any }>({
                                                 }: { entity: Entity<any>, size: CollectionSize }) => {
 
         const isSelected = isEntitySelected(entity);
+        const isAllSelected: any = isAllEntitiesSelected();
+
 
         const createEnabled = canCreate(collection.permissions, authController, path, context);
         const editEnabled = canEdit(collection.permissions, entity, authController, path, context);
@@ -318,9 +346,11 @@ export function EntityCollectionView<M extends { [Key: string]: any }>({
             <CollectionRowActions
                 entity={entity}
                 isSelected={isSelected}
+                isAllSelected={isAllSelected}
                 selectionEnabled={selectionEnabled}
                 size={size}
                 toggleEntitySelection={toggleEntitySelection}
+                selectAll={selectAll}
                 onEditClicked={onEditClicked}
                 onCopyClicked={createEnabled ? onCopyClicked : undefined}
                 onDeleteClicked={deleteEnabled ? setDeleteEntityClicked : undefined}
@@ -369,13 +399,13 @@ export function EntityCollectionView<M extends { [Key: string]: any }>({
                     </Button>}
 
                     {!largeLayout &&
-                    <IconButton
-                        color={"primary"}
-                        disabled={!(selectedEntities?.length) || !multipleDeleteEnabled}
-                        onClick={onMultipleDeleteClick}
-                        size="large">
-                        <Delete/>
-                    </IconButton>}
+                        <IconButton
+                            color={"primary"}
+                            disabled={!(selectedEntities?.length) || !multipleDeleteEnabled}
+                            onClick={onMultipleDeleteClick}
+                            size="large">
+                            <Delete/>
+                        </IconButton>}
                 </span>
             </Tooltip>;
 
@@ -423,14 +453,14 @@ export function EntityCollectionView<M extends { [Key: string]: any }>({
             />
 
             {deleteEntityClicked && <DeleteEntityDialog entityOrEntitiesToDelete={deleteEntityClicked}
-                                 path={path}
-                                 schema={collection.schema}
-                                 schemaResolver={schemaResolver}
-                                 callbacks={collection.callbacks}
-                                 open={!!deleteEntityClicked}
-                                 onEntityDelete={internalOnEntityDelete}
-                                 onMultipleEntitiesDelete={internalOnMultipleEntitiesDelete}
-                                 onClose={() => setDeleteEntityClicked(undefined)}/>}
+                                                        path={path}
+                                                        schema={collection.schema}
+                                                        schemaResolver={schemaResolver}
+                                                        callbacks={collection.callbacks}
+                                                        open={!!deleteEntityClicked}
+                                                        onEntityDelete={internalOnEntityDelete}
+                                                        onMultipleEntitiesDelete={internalOnMultipleEntitiesDelete}
+                                                        onClose={() => setDeleteEntityClicked(undefined)}/>}
         </>
     );
 }

@@ -11,6 +11,8 @@ export interface TableProps<T> {
      */
     data?: T[];
 
+    collection?: any
+
     /**
      * Properties displayed in this collection. If this property is not set
      * every property is displayed, you can filter

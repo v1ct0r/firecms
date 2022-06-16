@@ -72,6 +72,10 @@ interface BaseProperty {
      * Hide entity in table
      */
     hideInTable?: boolean;
+    /**
+     * Hide property if user not a global admin
+     */
+    onlyForGlobalAdmin?: boolean;
 }
 /**
  * @category Entity properties

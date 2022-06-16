@@ -259,6 +259,10 @@ export type SelectionController<M = any> = {
     setSelectedEntities: (selectedEntities: Entity<M>[]) => void;
     isEntitySelected: (entity: Entity<M>) => boolean;
     toggleEntitySelection: (entity: Entity<M>) => void;
+    selectAll: (data: any) => void;
+    isAllSelected?: any;
+    isAllEntitiesSelected?: any;
+    collectionData?: any;
 }
 
 /**
