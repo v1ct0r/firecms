@@ -4090,7 +4090,7 @@ function CollectionRowActions({
           className: classes.verticalLine
         }), selectionEnabled && /* @__PURE__ */ jsxs("div", {
           children: [/* @__PURE__ */ jsx(Tooltip, {
-            title: `Select 1asd ${entity.id}`,
+            title: `Select ${entity.id}`,
             style: {
               marginTop: "5px"
             },
@@ -11075,8 +11075,6 @@ function Table({
     }
     scrollToTop();
   };
-  const navigationContext = useNavigation();
-  navigationContext.getCollectionResolver(collection.path);
   const [isSelected, setIsSelected] = React__default.useState(void 0);
   const selectAll = () => {
     const checkbox = document.querySelectorAll(".select-all")[0].getElementsByTagName("input")[0];
