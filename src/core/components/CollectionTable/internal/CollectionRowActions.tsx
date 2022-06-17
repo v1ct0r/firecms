@@ -202,7 +202,7 @@ export function CollectionRowActions<M extends { [Key: string]: any }>({
                         <span className={classes.verticalLine}></span>
                         {selectionEnabled &&
                             <div>
-                                <Tooltip title={`Select 1asd ${entity.id}`} style={{ marginTop: "5px" }}>
+                                <Tooltip title={`Select ${entity.id}`} style={{ marginTop: "5px" }}>
                                     <Checkbox
                                         checked={isSelected}
                                         onChange={onCheckboxChange}

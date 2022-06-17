@@ -1,21 +1,21 @@
-import React, {useCallback, useEffect, useRef} from "react";
-import BaseTable, {Column, ColumnShape} from "react-base-table";
-import Measure, {ContentRect} from "react-measure";
-import {alpha, Box, Checkbox, Theme, Tooltip, Typography} from "@mui/material";
+import React, { useCallback, useEffect, useRef } from "react";
+import BaseTable, { Column, ColumnShape } from "react-base-table";
+import Measure, { ContentRect } from "react-measure";
+import { alpha, Box, Checkbox, Theme, Tooltip, Typography } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import clsx from "clsx";
 
-import {ErrorBoundary} from "../../internal/ErrorBoundary";
-import {CircularProgressCenter} from "../CircularProgressCenter";
-import {baseTableCss} from "./styles";
-import {TableHeader} from "./TableHeader";
-import {TableColumn, TableFilterValues, TableProps, TableWhereFilterOp} from "./TableProps";
+import { ErrorBoundary } from "../../internal/ErrorBoundary";
+import { CircularProgressCenter } from "../CircularProgressCenter";
+import { baseTableCss } from "./styles";
+import { TableHeader } from "./TableHeader";
+import { TableColumn, TableFilterValues, TableProps, TableWhereFilterOp } from "./TableProps";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
 
-import {getRowHeight} from "./common";
-import {useSelectionController} from "../EntityCollectionView";
-import {useNavigation} from "../../../hooks";
+import { getRowHeight } from "./common";
+import { useSelectionController } from "../EntityCollectionView";
+import { useNavigation } from "../../../hooks";
 
 const PIXEL_NEXT_PAGE_OFFSET = 1200;
 
@@ -140,9 +140,6 @@ export function Table<T>({
         scrollToTop();
     };
 
-    const navigationContext = useNavigation();
-    const coll: any = navigationContext.getCollectionResolver<any>(collection.path)
-
 
     const [isSelected, setIsSelected] = React.useState(undefined);
 
@@ -170,7 +167,7 @@ export function Table<T>({
             tableRef.current.scrollToTop(0);
         }
     };
-    const onScroll = ({scrollTop, scrollUpdateWasRequested}: {
+    const onScroll = ({ scrollTop, scrollUpdateWasRequested }: {
         scrollLeft: number;
         scrollTop: number;
         horizontalScrollDirection: "forward" | "backward";
@@ -195,7 +192,7 @@ export function Table<T>({
         onRowClick(props);
     };
 
-    const headerRenderer = ({columnIndex}: any) => {
+    const headerRenderer = ({ columnIndex }: any) => {
 
         const column = columns[columnIndex - 1];
 
@@ -206,7 +203,7 @@ export function Table<T>({
 
         const onInternalFilterUpdate = (filterForProperty?: [TableWhereFilterOp, any]) => {
 
-            let newFilterValue: TableFilterValues<any> = filter ? {...filter} : {};
+            let newFilterValue: TableFilterValues<any> = filter ? { ...filter } : {};
 
             if (!filterForProperty) {
                 delete newFilterValue[column.key];
@@ -217,7 +214,7 @@ export function Table<T>({
             const newSortBy: [string, "asc" | "desc"] | undefined = sortByProperty && currentSort ? [sortByProperty, currentSort] : undefined;
             const isNewFilterCombinationValid = !checkFilterCombination || checkFilterCombination(newFilterValue, newSortBy);
             if (!isNewFilterCombinationValid) {
-                newFilterValue = filterForProperty ? {[column.key]: filterForProperty} as TableFilterValues<T> : {};
+                newFilterValue = filterForProperty ? { [column.key]: filterForProperty } as TableFilterValues<T> : {};
             }
 
             if (onFilterUpdate) onFilterUpdate(newFilterValue);
@@ -328,7 +325,7 @@ export function Table<T>({
             <Measure
                 bounds
                 onResize={setTableSize}>
-                {({measureRef}) => {
+                {({ measureRef }) => {
 
                     return (
                         <div ref={measureRef}
@@ -337,7 +334,7 @@ export function Table<T>({
 
                             {tableSize?.bounds &&
                                 <BaseTable
-                                    rowClassName={clsx(classes.tableRow, {[classes.tableRowClickable]: hoverRow})}
+                                    rowClassName={clsx(classes.tableRow, { [classes.tableRowClickable]: hoverRow })}
                                     data={data}
                                     onColumnResizeEnd={onBaseTableColumnResize}
                                     width={tableSize.bounds.width}
@@ -352,7 +349,7 @@ export function Table<T>({
                                     onEndReachedThreshold={PIXEL_NEXT_PAGE_OFFSET}
                                     onEndReached={onEndReachedInternal}
                                     rowEventHandlers={
-                                        {onClick: clickRow as any}
+                                        { onClick: clickRow as any }
                                     }
                                 >
 
