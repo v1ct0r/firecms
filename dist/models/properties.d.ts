@@ -76,6 +76,18 @@ interface BaseProperty {
      * Hide property if user not a global admin
      */
     onlyForGlobalAdmin?: boolean;
+    /**
+     * Text color
+     */
+    textColor?: string;
+    /**
+     * Hide Filter Button
+     */
+    hideFilter?: boolean;
+    /**
+     * Disable all non default styles
+     */
+    disableCustomStyles?: boolean;
 }
 /**
  * @category Entity properties

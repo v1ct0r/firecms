@@ -17,8 +17,8 @@ import InputBase from '@mui/material/InputBase';
 import { alpha, darken as darken$1 } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
-import { CheckBox, CheckBoxOutlineBlank, KeyboardTab, Add, Delete } from '@mui/icons-material';
-import GetAppIcon from '@mui/icons-material/GetApp';
+import { CheckBox, CheckBoxOutlineBlank, KeyboardTab, Add } from '@mui/icons-material';
+import Upload from '@mui/icons-material/Upload';
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
@@ -9262,7 +9262,7 @@ function CollectionTableInternal({
   const sideEntityController = useSideEntityController();
   const theme = useTheme();
   const largeLayout = useMediaQuery(theme.breakpoints.up("md"));
-  const [size, setSize] = React__default.useState(collection.defaultSize ?? "m");
+  const [size, setSize] = React__default.useState("xs");
   const initialFilter = collection.initialFilter;
   const initialSort = collection.initialSort;
   const filterCombinations = collection.filterCombinations;
@@ -9967,7 +9967,7 @@ function ExportButton({
         color: "primary",
         onClick: handleClickOpen,
         size: "large",
-        children: /* @__PURE__ */ jsx(GetAppIcon, {})
+        children: /* @__PURE__ */ jsx(Upload, {})
       })
     }), /* @__PURE__ */ jsxs(Dialog, {
       open,
@@ -10176,7 +10176,7 @@ function EntityCollectionView$1({
   const onSizeChanged = useCallback((size) => {
     if (onCollectionModifiedForUser)
       onCollectionModifiedForUser({
-        defaultSize: size
+        defaultSize: "xs"
       });
   }, [onCollectionModifiedForUser]);
   const open = anchorEl != null;
@@ -10300,34 +10300,7 @@ function EntityCollectionView$1({
       color: "primary",
       children: /* @__PURE__ */ jsx(Add, {})
     }));
-    const multipleDeleteEnabled = selectedEntities.every((entity) => canDelete(collection.permissions, entity, authController, path, context));
-    const onMultipleDeleteClick = (event) => {
-      event.stopPropagation();
-      setDeleteEntityClicked(selectedEntities);
-    };
-    const multipleDeleteButton = selectionEnabled && /* @__PURE__ */ jsx(Tooltip, {
-      title: multipleDeleteEnabled ? "Multiple delete" : "You have selected one entity you cannot delete",
-      children: /* @__PURE__ */ jsxs("span", {
-        children: [largeLayout && /* @__PURE__ */ jsx(Button, {
-          disabled: !selectedEntities?.length || !multipleDeleteEnabled,
-          startIcon: /* @__PURE__ */ jsx(Delete, {}),
-          onClick: onMultipleDeleteClick,
-          color: "primary",
-          children: /* @__PURE__ */ jsxs("p", {
-            style: {
-              minWidth: 24
-            },
-            children: ["(", selectedEntities?.length, ")"]
-          })
-        }), !largeLayout && /* @__PURE__ */ jsx(IconButton, {
-          color: "primary",
-          disabled: !selectedEntities?.length || !multipleDeleteEnabled,
-          onClick: onMultipleDeleteClick,
-          size: "large",
-          children: /* @__PURE__ */ jsx(Delete, {})
-        })]
-      })
-    });
+    selectedEntities.every((entity) => canDelete(collection.permissions, entity, authController, path, context));
     const extraActions = collection.extraActions ? collection.extraActions({
       path,
       collection,
@@ -10341,7 +10314,7 @@ function EntityCollectionView$1({
       path
     });
     return /* @__PURE__ */ jsxs(Fragment, {
-      children: [extraActions, multipleDeleteButton, exportButton, addButton]
+      children: [extraActions, exportButton, addButton]
     });
   }, [usedSelectionController, path, collection, largeLayout]);
   return /* @__PURE__ */ jsxs(Fragment, {
@@ -10843,7 +10816,7 @@ function TableHeaderInternal({
             children: column.label
           })]
         })
-      }), column.sortable && (sort || onHover || open) && /* @__PURE__ */ jsx(Grid, {
+      }), column.property && !column.property.hideFilter && column.sortable && (sort || onHover || open) && /* @__PURE__ */ jsx(Grid, {
         item: true,
         children: /* @__PURE__ */ jsx(Badge, {
           color: "secondary",
@@ -10865,7 +10838,7 @@ function TableHeaderInternal({
             })]
           })
         })
-      }), column.filter && /* @__PURE__ */ jsx(Grid, {
+      }), column.property && !column.property.hideFilter && column.filter && /* @__PURE__ */ jsx(Grid, {
         item: true,
         children: /* @__PURE__ */ jsx(Badge, {
           color: "secondary",
@@ -11020,6 +10993,9 @@ const useTableStyles = makeStyles((theme) => createStyles({
   },
   column: {
     padding: "0px !important"
+  },
+  alignText: {
+    paddingLeft: "12px !important"
   }
 }));
 function Table({
@@ -11050,6 +11026,14 @@ function Table({
   const scrollRef = useRef(0);
   const endReachedTimestampRef = useRef(0);
   const classes = useTableStyles();
+  const getClass = (column) => {
+    if (!column.property)
+      return classes.column;
+    if (!column.property.disableCustomStyles && (column.property.dataType === "number" || column.property.dataType === "string" || column.property.dataType === "timestamp")) {
+      return `${classes.column} ${classes.alignText} alignText`;
+    } else
+      return classes.column;
+  };
   useEffect(() => {
     if (tableRef.current && data?.length) {
       tableRef.current.scrollToTop(scrollRef.current);
@@ -11270,7 +11254,10 @@ function Table({
               width: 160
             }, "header-id"), columns.map((column) => /* @__PURE__ */ jsx(Column, {
               title: column.label,
-              className: classes.column,
+              className: getClass(column),
+              style: {
+                color: column.property && column.property.textColor ? column.property.textColor : "rgba(0, 0, 0, 0.87)"
+              },
               headerRenderer,
               cellRenderer: column.cellRenderer,
               height: getRowHeight(size),
