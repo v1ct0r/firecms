@@ -228,7 +228,7 @@ export function EntityCollectionView<M extends { [Key: string]: any }>({
 
     const onSizeChanged = useCallback((size: CollectionSize) => {
         if (onCollectionModifiedForUser)
-            onCollectionModifiedForUser({ defaultSize: size })
+            onCollectionModifiedForUser({ defaultSize: "xs" })
     }, [onCollectionModifiedForUser]);
 
     const open = anchorEl != null;
@@ -384,30 +384,7 @@ export function EntityCollectionView<M extends { [Key: string]: any }>({
             event.stopPropagation();
             setDeleteEntityClicked(selectedEntities);
         };
-        const multipleDeleteButton = selectionEnabled &&
 
-            <Tooltip
-                title={multipleDeleteEnabled ? "Multiple delete" : "You have selected one entity you cannot delete"}>
-                <span>
-                    {largeLayout && <Button
-                        disabled={!(selectedEntities?.length) || !multipleDeleteEnabled}
-                        startIcon={<Delete/>}
-                        onClick={onMultipleDeleteClick}
-                        color={"primary"}
-                    >
-                        <p style={{ minWidth: 24 }}>({selectedEntities?.length})</p>
-                    </Button>}
-
-                    {!largeLayout &&
-                        <IconButton
-                            color={"primary"}
-                            disabled={!(selectedEntities?.length) || !multipleDeleteEnabled}
-                            onClick={onMultipleDeleteClick}
-                            size="large">
-                            <Delete/>
-                        </IconButton>}
-                </span>
-            </Tooltip>;
 
         const extraActions = collection.extraActions
             ? collection.extraActions({
@@ -427,7 +404,6 @@ export function EntityCollectionView<M extends { [Key: string]: any }>({
         return (
             <>
                 {extraActions}
-                {multipleDeleteButton}
                 {exportButton}
                 {addButton}
             </>

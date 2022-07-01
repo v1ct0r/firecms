@@ -12,7 +12,7 @@ import {
     Tooltip
 } from "@mui/material";
 
-import GetAppIcon from "@mui/icons-material/GetApp";
+import Upload from "@mui/icons-material/Upload";
 import {
     Entity,
     EntitySchema,
@@ -155,7 +155,7 @@ export function ExportButton<M extends { [Key: string]: any }, UserType>({
         <Tooltip title={"Export"}>
             <IconButton color={"primary"} onClick={handleClickOpen}
                         size="large">
-                <GetAppIcon/>
+                <Upload/>
             </IconButton>
         </Tooltip>
 

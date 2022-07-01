@@ -90,7 +90,6 @@ function TableHeaderInternal<M extends { [Key: string]: any }>({
                                                                    filter,
                                                                    column
                                                                }: TableHeaderProps<M>) {
-
     const [onHover, setOnHover] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
 
@@ -134,7 +133,7 @@ function TableHeaderInternal<M extends { [Key: string]: any }>({
                     </div>
                 </Grid>
 
-                {column.sortable && (sort || onHover || open) &&
+                {column.property && !column.property.hideFilter && column.sortable && (sort || onHover || open) &&
                 <Grid item>
                     <Badge color="secondary"
                            variant="dot"
@@ -157,7 +156,7 @@ function TableHeaderInternal<M extends { [Key: string]: any }>({
                 </Grid>
                 }
 
-                {column.filter && <Grid item>
+                {column.property && !column.property.hideFilter && column.filter && <Grid item>
                     <Badge color="secondary"
                            variant="dot"
                            overlap="circular"
