@@ -106,7 +106,7 @@ export function CollectionTableInternal<M extends { [Key: string]: any },
     const theme = useTheme();
     const largeLayout = useMediaQuery(theme.breakpoints.up("md"));
 
-    const [size, setSize] = React.useState<CollectionSize>(collection.defaultSize ?? "m");
+    const [size, setSize] = React.useState<CollectionSize>("xs");
 
     const initialFilter = collection.initialFilter;
     const initialSort = collection.initialSort;
