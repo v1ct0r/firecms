@@ -172,7 +172,6 @@ export function useBuildNavigationContext<UserType>({
                 };
 
         }
-
         if (resolvedCollection) {
             const schema = resolvedCollection.schema;
             const subcollections = resolvedCollection.subcollections;
@@ -189,14 +188,15 @@ export function useBuildNavigationContext<UserType>({
                 permissions: result.permissions ?? permissions
             };
         }
-
-        if (!result.schemaResolver) {
-            if (!result.schema)
-                throw Error(`Not able to resolve schema for ${sidePanelKey}`);
-            result.schemaResolver = buildSchemaResolver({
-                schema: result.schema,
-                path
-            });
+        if (result && Object.keys(result).length) {
+            if (!result.schemaResolver) {
+                if (!result.schema)
+                    throw Error(`Not able to resolve schema for ${sidePanelKey}`);
+                result.schemaResolver = buildSchemaResolver({
+                    schema: result.schema,
+                    path
+                });
+            }
         }
 
         return { ...resolvedCollection, ...(result as EntityCollectionResolver<M>) };
