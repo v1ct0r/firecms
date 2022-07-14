@@ -895,8 +895,6 @@ function useBuildNavigationContext({
     const collections = navigation?.collections;
     const baseCollection = collection ?? (collections && getCollectionByPath(removeInitialAndTrailingSlashes(path), collections));
     const collectionOverride = getCollectionOverride(path);
-    console.log("baseCollection11", baseCollection);
-    console.log("collectionOverride11", collectionOverride);
     const resolvedCollection = baseCollection ? mergeDeep(baseCollection, collectionOverride) : void 0;
     const sidePanelKey = getSidePanelKey(path, entityId);
     let result = {};
@@ -926,7 +924,6 @@ function useBuildNavigationContext({
           callbacks: overriddenProps.callbacks ?? result.callbacks
         };
     }
-    console.log("resolvedCollection3", resolvedCollection);
     if (resolvedCollection) {
       const schema = resolvedCollection.schema;
       const subcollections = resolvedCollection.subcollections;
@@ -943,7 +940,6 @@ function useBuildNavigationContext({
         permissions: result.permissions ?? permissions
       };
     }
-    console.log("res11", result);
     if (result && Object.keys(result).length) {
       if (!result.schemaResolver) {
         if (!result.schema)
