@@ -11742,6 +11742,19 @@ function Scaffold(props) {
       }), /* @__PURE__ */ jsx("main", {
         className: classes.content,
         children
+      }), /* @__PURE__ */ jsxs("div", {
+        style: {
+          height: "80px",
+          width: "100%",
+          backgroundColor: "#3D8B76",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-end",
+          padding: "0 20px",
+          color: "#fff",
+          fontWeight: "500"
+        },
+        children: ["\xA9 2015-", new Date().getFullYear(), " Neuro-Eye Diagnostic Systems LLC ", /* @__PURE__ */ jsx("br", {}), "Patent No. 11,369,263"]
       })]
     })]
   });
