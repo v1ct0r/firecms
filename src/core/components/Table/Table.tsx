@@ -1,21 +1,21 @@
-import React, {useCallback, useEffect, useRef} from "react";
-import BaseTable, {Column, ColumnShape} from "react-base-table";
-import Measure, {ContentRect} from "react-measure";
-import {alpha, Box, Checkbox, Theme, Tooltip, Typography} from "@mui/material";
+import React, { useCallback, useEffect, useRef } from "react";
+import BaseTable, { Column, ColumnShape } from "react-base-table";
+import Measure, { ContentRect } from "react-measure";
+import { alpha, Box, Checkbox, Theme, Tooltip, Typography } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import clsx from "clsx";
 
-import {ErrorBoundary} from "../../internal/ErrorBoundary";
-import {CircularProgressCenter} from "../CircularProgressCenter";
-import {baseTableCss} from "./styles";
-import {TableHeader} from "./TableHeader";
-import {TableColumn, TableFilterValues, TableProps, TableWhereFilterOp} from "./TableProps";
+import { ErrorBoundary } from "../../internal/ErrorBoundary";
+import { CircularProgressCenter } from "../CircularProgressCenter";
+import { baseTableCss } from "./styles";
+import { TableHeader } from "./TableHeader";
+import { TableColumn, TableFilterValues, TableProps, TableWhereFilterOp } from "./TableProps";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
 
-import {getRowHeight} from "./common";
-import {useSelectionController} from "../EntityCollectionView";
-import {useNavigation} from "../../../hooks";
+import { getRowHeight } from "./common";
+import { useSelectionController } from "../EntityCollectionView";
+import { useNavigation } from "../../../hooks";
 
 const PIXEL_NEXT_PAGE_OFFSET = 1200;
 
@@ -59,7 +59,7 @@ export const useTableStyles = makeStyles<Theme>(theme => createStyles({
         padding: "0px !important"
     },
     alignText: {
-        paddingLeft: "12px !important",
+        paddingLeft: "12px !important"
     }
 }));
 
@@ -111,6 +111,9 @@ export function Table<T>({
 
     const classes = useTableStyles();
     const getClass = (column: any) => {
+        console.log("asdasdacc", column)
+        console.log("datatata", data)
+        console.log("columnscolumns", columns)
         if (!column.property) return classes.column
 
         if (!column.property.disableCustomStyles &&
@@ -180,7 +183,7 @@ export function Table<T>({
             tableRef.current.scrollToTop(0);
         }
     };
-    const onScroll = ({scrollTop, scrollUpdateWasRequested}: {
+    const onScroll = ({ scrollTop, scrollUpdateWasRequested }: {
         scrollLeft: number;
         scrollTop: number;
         horizontalScrollDirection: "forward" | "backward";
@@ -205,7 +208,7 @@ export function Table<T>({
         onRowClick(props);
     };
 
-    const headerRenderer = ({columnIndex}: any) => {
+    const headerRenderer = ({ columnIndex }: any) => {
 
         const column = columns[columnIndex - 1];
 
@@ -216,7 +219,7 @@ export function Table<T>({
 
         const onInternalFilterUpdate = (filterForProperty?: [TableWhereFilterOp, any]) => {
 
-            let newFilterValue: TableFilterValues<any> = filter ? {...filter} : {};
+            let newFilterValue: TableFilterValues<any> = filter ? { ...filter } : {};
 
             if (!filterForProperty) {
                 delete newFilterValue[column.key];
@@ -227,7 +230,7 @@ export function Table<T>({
             const newSortBy: [string, "asc" | "desc"] | undefined = sortByProperty && currentSort ? [sortByProperty, currentSort] : undefined;
             const isNewFilterCombinationValid = !checkFilterCombination || checkFilterCombination(newFilterValue, newSortBy);
             if (!isNewFilterCombinationValid) {
-                newFilterValue = filterForProperty ? {[column.key]: filterForProperty} as TableFilterValues<T> : {};
+                newFilterValue = filterForProperty ? { [column.key]: filterForProperty } as TableFilterValues<T> : {};
             }
 
             if (onFilterUpdate) onFilterUpdate(newFilterValue);
@@ -339,7 +342,7 @@ export function Table<T>({
             <Measure
                 bounds
                 onResize={setTableSize}>
-                {({measureRef}) => {
+                {({ measureRef }) => {
 
                     return (
                         <div ref={measureRef}
@@ -348,7 +351,7 @@ export function Table<T>({
 
                             {tableSize?.bounds &&
                                 <BaseTable
-                                    rowClassName={clsx(classes.tableRow, {[classes.tableRowClickable]: hoverRow})}
+                                    rowClassName={clsx(classes.tableRow, { [classes.tableRowClickable]: hoverRow })}
                                     data={data}
                                     onColumnResizeEnd={onBaseTableColumnResize}
                                     width={tableSize.bounds.width}
@@ -363,7 +366,7 @@ export function Table<T>({
                                     onEndReachedThreshold={PIXEL_NEXT_PAGE_OFFSET}
                                     onEndReached={onEndReachedInternal}
                                     rowEventHandlers={
-                                        {onClick: clickRow as any}
+                                        { onClick: clickRow as any }
                                     }
                                 >
 
@@ -390,8 +393,16 @@ export function Table<T>({
                                         <Column
                                             key={column.key}
                                             title={column.label}
-                                            className={getClass(column)}
-                                            style={{color: column.property && column.property.textColor ? column.property.textColor : "rgba(0, 0, 0, 0.87)"}}
+                                            className={({ rowData }) => {
+                                                const currentColumn: any = data?.filter((d: any) => d.id === rowData.id)[0]
+                                                if (currentColumn!.values.archived) {
+                                                    return `${getClass(column)} archived-row`
+                                                } else {
+                                                    return getClass(column)
+                                                }
+                                            }
+                                            }
+                                            style={{ color: column.property && column.property.textColor ? column.property.textColor : "rgba(0, 0, 0, 0.87)" }}
                                             headerRenderer={headerRenderer}
                                             cellRenderer={column.cellRenderer}
                                             height={getRowHeight(size)}
