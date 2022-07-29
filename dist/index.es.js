@@ -9188,15 +9188,23 @@ function useBuildColumnsFromSchema({
     };
   });
   if (additionalColumns) {
-    const items = additionalColumns.map((additionalColumn) => ({
-      key: additionalColumn.id,
-      type: "additional",
-      align: "left",
-      sortable: false,
-      label: additionalColumn.title,
-      width: additionalColumn.width ?? 200,
-      cellRenderer: additionalCellRenderer
-    }));
+    const items = additionalColumns.map((additionalColumn) => {
+      const item = {
+        key: additionalColumn.id,
+        type: "additional",
+        align: "left",
+        sortable: false,
+        label: additionalColumn.title,
+        width: additionalColumn.width ?? 200,
+        cellRenderer: additionalCellRenderer
+      };
+      if (additionalColumn.hideInTable) {
+        item.property = {
+          hideInTable: true
+        };
+      }
+      return item;
+    });
     allColumns.push(...items);
   }
   const columns = displayedProperties.map((p) => {
@@ -9283,6 +9291,7 @@ function CollectionTableInternal({
         title: subcollection.name,
         width: 200,
         dependencies: [],
+        hideInTable: subcollection.hideInTable ?? false,
         builder: ({
           entity
         }) => /* @__PURE__ */ jsx(Button, {
