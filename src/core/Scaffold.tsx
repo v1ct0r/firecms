@@ -117,6 +117,20 @@ export function Scaffold(props: PropsWithChildren<ScaffoldProps>) {
                     className={classes.content}>
                     {children}
                 </main>
+                <div style={{
+                    height: "80px",
+                    width: "100%",
+                    backgroundColor: "#3D8B76",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "flex-end",
+                    padding: "0 20px",
+                    color: "#fff",
+                    fontWeight: "500"
+                }}>
+                    © 2015-{new Date().getFullYear()} Neuro-Eye Diagnostic Systems LLC <br/>
+                    Patent No. 11,369,263
+                </div>
             </div>
 
         </>

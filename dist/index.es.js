@@ -9188,15 +9188,23 @@ function useBuildColumnsFromSchema({
     };
   });
   if (additionalColumns) {
-    const items = additionalColumns.map((additionalColumn) => ({
-      key: additionalColumn.id,
-      type: "additional",
-      align: "left",
-      sortable: false,
-      label: additionalColumn.title,
-      width: additionalColumn.width ?? 200,
-      cellRenderer: additionalCellRenderer
-    }));
+    const items = additionalColumns.map((additionalColumn) => {
+      const item = {
+        key: additionalColumn.id,
+        type: "additional",
+        align: "left",
+        sortable: false,
+        label: additionalColumn.title,
+        width: additionalColumn.width ?? 200,
+        cellRenderer: additionalCellRenderer
+      };
+      if (additionalColumn.hideInTable) {
+        item.property = {
+          hideInTable: true
+        };
+      }
+      return item;
+    });
     allColumns.push(...items);
   }
   const columns = displayedProperties.map((p) => {
@@ -9283,6 +9291,7 @@ function CollectionTableInternal({
         title: subcollection.name,
         width: 200,
         dependencies: [],
+        hideInTable: subcollection.hideInTable ?? false,
         builder: ({
           entity
         }) => /* @__PURE__ */ jsx(Button, {
@@ -11754,6 +11763,19 @@ function Scaffold(props) {
       }), /* @__PURE__ */ jsx("main", {
         className: classes.content,
         children
+      }), /* @__PURE__ */ jsxs("div", {
+        style: {
+          height: "80px",
+          width: "100%",
+          backgroundColor: "#3D8B76",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-end",
+          padding: "0 20px",
+          color: "#fff",
+          fontWeight: "500"
+        },
+        children: ["\xA9 2015-", new Date().getFullYear(), " Neuro-Eye Diagnostic Systems LLC ", /* @__PURE__ */ jsx("br", {}), "Patent No. 11,369,263"]
       })]
     })]
   });

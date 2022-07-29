@@ -135,6 +135,10 @@ export interface EntityCollection<M extends {
      * @see useSelectionController
      */
     selectionController?: SelectionController<M>;
+    /**
+     * Hide entity in table
+     */
+    hideInTable?: boolean;
 }
 /**
  * Sizes in which a collection can be rendered
@@ -178,6 +182,14 @@ export interface AdditionalColumnDelegate<M extends {
      * on entity property updates.
      */
     dependencies?: Extract<keyof M, string>[];
+    /**
+     * Hide entity in table
+     */
+    hideInTable?: boolean;
+    /**
+     * Additional properties
+     */
+    property?: any;
 }
 /**
  * @category Models
