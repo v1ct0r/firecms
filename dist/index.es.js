@@ -11029,6 +11029,9 @@ function Table({
   const endReachedTimestampRef = useRef(0);
   const classes = useTableStyles();
   const getClass = (column) => {
+    console.log("asdasdacc", column);
+    console.log("datatata", data);
+    console.log("columnscolumns", columns);
     if (!column.property)
       return classes.column;
     if (!column.property.disableCustomStyles && (column.property.dataType === "number" || column.property.dataType === "string" || column.property.dataType === "timestamp")) {
@@ -11256,7 +11259,16 @@ function Table({
               width: 160
             }, "header-id"), columns.map((column) => /* @__PURE__ */ jsx(Column, {
               title: column.label,
-              className: getClass(column),
+              className: ({
+                rowData
+              }) => {
+                const currentColumn = data?.filter((d) => d.id === rowData.id)[0];
+                if (currentColumn.values.archived) {
+                  return `${getClass(column)} archived-row`;
+                } else {
+                  return getClass(column);
+                }
+              },
               style: {
                 color: column.property && column.property.textColor ? column.property.textColor : "rgba(0, 0, 0, 0.87)"
               },

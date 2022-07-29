@@ -432,8 +432,8 @@ export function useBuildColumnsFromSchema<M, AdditionalKey extends string, UserT
         });
 
     if (additionalColumns) {
-        const items: TableColumn<M>[] = additionalColumns.map((additionalColumn) =>
-            ({
+        const items: TableColumn<M>[] = additionalColumns.map((additionalColumn) => {
+           const item: any = ({
                 key: additionalColumn.id,
                 type: "additional",
                 align: "left",
@@ -441,7 +441,12 @@ export function useBuildColumnsFromSchema<M, AdditionalKey extends string, UserT
                 label: additionalColumn.title,
                 width: additionalColumn.width ?? 200,
                 cellRenderer: additionalCellRenderer
-            }));
+            })
+            if (additionalColumn.hideInTable) {
+                item.property = { hideInTable: true }
+            }
+            return item
+        });
         allColumns.push(...items);
     }
 
