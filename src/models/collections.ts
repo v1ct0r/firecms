@@ -21,7 +21,7 @@ export interface EntityCollection<M extends { [Key: string]: any } = any,
      */
     name: string;
 
-    buttonContent?: ({entity}: {
+    buttonContent?: ({ entity }: {
         entity: Entity<M>
     }) => string;
 
@@ -160,6 +160,10 @@ export interface EntityCollection<M extends { [Key: string]: any } = any,
      */
     selectionController?: SelectionController<M>;
 
+    /**
+     * Hide entity in table
+     */
+    hideInTable?: boolean;
 }
 
 /**
@@ -210,6 +214,16 @@ export interface AdditionalColumnDelegate<M extends { [Key: string]: any } = any
      * on entity property updates.
      */
     dependencies?: Extract<keyof M, string>[];
+
+    /**
+     * Hide entity in table
+     */
+    hideInTable?: boolean;
+
+    /**
+     * Additional properties
+     */
+    property?: any
 }
 
 /**

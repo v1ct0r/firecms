@@ -123,7 +123,6 @@ export function CollectionTableInternal<M extends { [Key: string]: any },
     const filterIsSet = !!filterValues && Object.keys(filterValues).length > 0;
 
     const classes = useStyles();
-
     const additionalColumns = useMemo(() => {
         const subcollectionColumns: AdditionalColumnDelegate<M, any, any>[] = collection.subcollections?.map((subcollection) => {
             return {
@@ -131,6 +130,7 @@ export function CollectionTableInternal<M extends { [Key: string]: any },
                 title: subcollection.name,
                 width: 200,
                 dependencies: [],
+                hideInTable: subcollection.hideInTable ?? false,
                 builder: ({ entity }) => (
                     <Button color={"primary"}
                             onClick={(event) => {
