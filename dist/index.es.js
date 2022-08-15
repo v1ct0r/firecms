@@ -4,7 +4,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import * as locales from 'date-fns/locale';
 import * as React from 'react';
 import React__default, { useState, useEffect, useRef, useCallback, useMemo, useContext, createElement, useLayoutEffect, lazy, Suspense } from 'react';
-import { Snackbar, Alert, useMediaQuery, Tooltip, Skeleton, Box, Typography, Chip, IconButton, Table as Table$1, TableBody, TableRow, TableCell as TableCell$1, Link, CardMedia, Grid, List, ListItem, Paper, lighten, darken, Divider, TableContainer, FormControl, alpha as alpha$1, useTheme, Select as Select$1, InputBase as InputBase$1, MenuItem, Hidden, CircularProgress, Checkbox, TextareaAutosize, ListItemText, Input, Switch, TextField as TextField$1, Button, FormHelperText, InputLabel, FormControlLabel, FilledInput, InputAdornment, Container, Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, Popover, CardActionArea, CardContent, CardActions, OutlinedInput, Badge, Slide, AppBar, Toolbar, Breadcrumbs, Avatar, Drawer as Drawer$1, useForkRef, debounce, ownerWindow, Modal, Backdrop, Tabs, Tab, createTheme, Fade, CssBaseline, ThemeProvider } from '@mui/material';
+import { Snackbar, Alert, useMediaQuery, Tooltip, Skeleton, Box, Typography, Chip, IconButton, Table as Table$1, TableBody, TableRow, TableCell as TableCell$1, Link, CardMedia, Grid, List, ListItem, Paper, lighten, darken, Divider, TableContainer, FormControl, alpha as alpha$1, useTheme, Select as Select$1, InputBase as InputBase$1, MenuItem, Hidden, CircularProgress, Checkbox, TextareaAutosize, ListItemText, Input, Switch, TextField as TextField$1, Button, FormHelperText, InputLabel, FormControlLabel, FilledInput, InputAdornment, Container, ButtonGroup, Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, Popover, CardActionArea, CardContent, CardActions, OutlinedInput, Badge, Slide, AppBar, Toolbar, Breadcrumbs, Avatar, Drawer as Drawer$1, useForkRef, debounce, ownerWindow, Modal, Backdrop, Tabs, Tab, createTheme, Fade, CssBaseline, ThemeProvider } from '@mui/material';
 import { jsxs, jsx, Fragment } from '@emotion/react/jsx-runtime';
 import { useLocation, useNavigate, Link as Link$1, Route, Routes, NavLink, UNSAFE_NavigationContext, BrowserRouter } from 'react-router-dom';
 import hash from 'object-hash';
@@ -77,6 +77,8 @@ import FlagIcon from '@mui/icons-material/Flag';
 import AdjustIcon from '@mui/icons-material/Adjust';
 import MDEditor from '@uiw/react-md-editor';
 import { createElement as createElement$1 } from '@emotion/react';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { getAuth, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, OAuthProvider, FacebookAuthProvider, GithubAuthProvider, TwitterAuthProvider, signInWithEmailAndPassword, fetchSignInMethodsForEmail } from 'firebase/auth';
 import { signInAnonymously, createUserWithEmailAndPassword } from '@firebase/auth';
 import { getFirestore, query, getDocs, onSnapshot, getDoc, doc, collection, serverTimestamp, GeoPoint as GeoPoint$1, setDoc, deleteDoc, where, Timestamp, DocumentReference, orderBy, startAfter, limit } from 'firebase/firestore';
@@ -2011,6 +2013,7 @@ function useCollectionFetch({
   const [dataLoading, setDataLoading] = useState(false);
   const [dataLoadingError, setDataLoadingError] = useState();
   const [noMoreToLoad, setNoMoreToLoad] = useState(false);
+  const [entitiesLength, setEntitiesLength] = useState(0);
   const updateData = useCallback((entities) => {
     if (!initialEntities) {
       setData(entities);
@@ -2025,6 +2028,7 @@ function useCollectionFetch({
       setDataLoading(false);
       setDataLoadingError(void 0);
       updateData(entities);
+      setEntitiesLength(entities.length);
       setNoMoreToLoad(!itemCount || entities.length < itemCount);
     };
     const onError = (error) => {
@@ -2065,7 +2069,8 @@ function useCollectionFetch({
     data,
     dataLoading,
     dataLoadingError,
-    noMoreToLoad
+    noMoreToLoad,
+    entitiesLength
   };
 }
 
@@ -9390,11 +9395,22 @@ function CollectionTableInternal({
     searchString,
     itemCount
   });
+  const [disabled, setDisabled] = useState(false);
+  useEffect(() => {
+    setDisabled(dataLoading);
+  });
+  const [page, setPage] = useState(1);
+  console.log("cccc - DATA BEFORE", data);
+  console.log("cccc - ITEM COUNT", itemCount);
+  const dataToShow = data.slice(page === 1 ? 0 : (page - 1) * 10);
+  console.log("cccc - DATA AFTER", data);
+  console.log("cccc - PAGE", page);
+  console.log("-----------------------------------");
   const actions = useMemo(() => toolbarActionsBuilder && toolbarActionsBuilder({
     size,
-    data
-  }), [toolbarActionsBuilder, size, data]);
-  const loadNextPage = useCallback(() => {
+    data: dataToShow
+  }), [toolbarActionsBuilder, size, dataToShow]);
+  useCallback(() => {
     if (!paginationEnabled || dataLoading || noMoreToLoad)
       return;
     if (itemCount !== void 0)
@@ -9417,7 +9433,7 @@ function CollectionTableInternal({
       return /* @__PURE__ */ jsx(CollectionRowActions, {
         entity: entry,
         size: size2,
-        data
+        data: dataToShow
       });
   }, [tableRowActionsBuilder]);
   const onRowClick = useCallback(({
@@ -9429,7 +9445,24 @@ function CollectionTableInternal({
       onSizeChanged(size2);
     setSize(size2);
   }, []);
+  const handelPrev = () => {
+    if (page === 1)
+      return;
+    const nextPage = page - 1;
+    setPage(nextPage);
+    setItemCount(nextPage * 10);
+  };
+  const handelNext = () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    setItemCount(nextPage * 10);
+  };
   const onTextSearch = useCallback((newSearchString) => setSearchString(newSearchString), []);
+  const onSort = () => {
+    setPage(1);
+    setItemCount(10);
+  };
+  console.log("dataToShowas", dataToShow);
   return /* @__PURE__ */ jsxs(Paper, {
     className: classes.root,
     children: [/* @__PURE__ */ jsx(CollectionTableToolbar, {
@@ -9442,10 +9475,9 @@ function CollectionTableInternal({
       title,
       loading: dataLoading
     }), /* @__PURE__ */ jsx(Table, {
-      data,
+      data: dataLoading ? [] : dataToShow,
       columns,
       onRowClick,
-      onEndReached: loadNextPage,
       onResetPagination: resetPagination,
       idColumnBuilder: buildIdColumn,
       error: dataLoadingError,
@@ -9460,7 +9492,26 @@ function CollectionTableInternal({
       onSortByUpdate: setSortBy,
       hoverRow,
       checkFilterCombination: (filterValues2, sortBy2) => isFilterCombinationValid(filterValues2, filterCombinations, sortBy2),
-      collection
+      collection,
+      onSort
+    }), /* @__PURE__ */ jsx("div", {
+      style: {
+        display: "flex",
+        justifyContent: "center"
+      },
+      children: /* @__PURE__ */ jsxs(ButtonGroup, {
+        disableElevation: true,
+        variant: "contained",
+        children: [/* @__PURE__ */ jsx(Button, {
+          disabled: page === 1 || dataLoading,
+          onClick: handelPrev,
+          children: /* @__PURE__ */ jsx(ArrowBackIosNewIcon, {})
+        }), /* @__PURE__ */ jsx(Button, {
+          disabled: noMoreToLoad || dataLoading,
+          onClick: handelNext,
+          children: /* @__PURE__ */ jsx(ArrowForwardIosIcon, {})
+        })]
+      })
     }), popupFormField]
   });
 }
@@ -11028,7 +11079,8 @@ function Table({
   emptyMessage,
   onSortByUpdate,
   loading,
-  hoverRow = true
+  hoverRow = true,
+  onSort
 }) {
   const sortByProperty = sortBy ? sortBy[0] : void 0;
   const currentSort = sortBy ? sortBy[1] : void 0;
@@ -11038,9 +11090,6 @@ function Table({
   const endReachedTimestampRef = useRef(0);
   const classes = useTableStyles();
   const getClass = (column) => {
-    console.log("asdasdacc", column);
-    console.log("datatata", data);
-    console.log("columnscolumns", columns);
     if (!column.property)
       return classes.column;
     if (!column.property.disableCustomStyles && (column.property.dataType === "number" || column.property.dataType === "string" || column.property.dataType === "timestamp")) {
@@ -11071,6 +11120,7 @@ function Table({
     if (onSortByUpdate) {
       onSortByUpdate(newSortBy);
     }
+    onSort();
     scrollToTop();
   };
   const [isSelected, setIsSelected] = React__default.useState(void 0);

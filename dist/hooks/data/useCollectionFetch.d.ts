@@ -45,6 +45,7 @@ export interface CollectionFetchResult<M extends {
     dataLoading: boolean;
     noMoreToLoad: boolean;
     dataLoadingError?: Error;
+    entitiesLength?: number;
 }
 /**
  * This hook is used to fetch collections using a given schema
