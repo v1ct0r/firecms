@@ -98,6 +98,7 @@ export interface TableProps<T> {
      * Should apply a different style when hovering
      */
     hoverRow?: boolean;
+    onSort: any;
 }
 /**
  * @see Table

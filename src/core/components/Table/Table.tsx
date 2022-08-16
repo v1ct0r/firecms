@@ -95,7 +95,8 @@ export function Table<T>({
                              emptyMessage,
                              onSortByUpdate,
                              loading,
-                             hoverRow = true
+                             hoverRow = true,
+                             onSort
                          }: TableProps<T>) {
     const sortByProperty: string | undefined = sortBy ? sortBy[0] : undefined;
     const currentSort: "asc" | "desc" | undefined = sortBy ? sortBy[1] : undefined;
@@ -111,9 +112,6 @@ export function Table<T>({
 
     const classes = useTableStyles();
     const getClass = (column: any) => {
-        console.log("asdasdacc", column)
-        console.log("datatata", data)
-        console.log("columnscolumns", columns)
         if (!column.property) return classes.column
 
         if (!column.property.disableCustomStyles &&
@@ -152,7 +150,7 @@ export function Table<T>({
         if (onSortByUpdate) {
             onSortByUpdate(newSortBy);
         }
-
+        onSort()
         scrollToTop();
     };
 

@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo } from "react";
-import { Button, Paper, Theme, useMediaQuery, useTheme } from "@mui/material";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
+import { Button, ButtonGroup, Paper, Theme, useMediaQuery, useTheme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import createStyles from "@mui/styles/createStyles";
 
@@ -26,11 +26,12 @@ import {
 } from "../../../hooks";
 import { Table } from "../../index";
 import {
-    checkInlineEditing,
     OnCellValueChange,
     UniqueFieldValidator,
     useBuildColumnsFromSchema
 } from "./column_builder";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 const DEFAULT_PAGE_SIZE = 50;
 
@@ -209,7 +210,7 @@ export function CollectionTableInternal<M extends { [Key: string]: any },
         onCellValueChange: onCellChanged,
         uniqueFieldValidator
     });
-    console.log('columns', columns)
+
     columns = columns.filter(c => {
         if (c.property) {
             return !c.property.hideInTable
@@ -234,10 +235,12 @@ export function CollectionTableInternal<M extends { [Key: string]: any },
         itemCount
     });
 
+    const [page, setPage] = useState(1)
+    const dataToShow: Entity<any>[] = data.slice(page === 1 ? 0 : ((page - 1) * 10))
     const actions = useMemo(() => toolbarActionsBuilder && toolbarActionsBuilder({
         size,
-        data
-    }), [toolbarActionsBuilder, size, data]);
+        data: dataToShow
+    }), [toolbarActionsBuilder, size, dataToShow]);
 
     const loadNextPage = useCallback(() => {
         if (!paginationEnabled || dataLoading || noMoreToLoad)
@@ -245,6 +248,7 @@ export function CollectionTableInternal<M extends { [Key: string]: any },
         if (itemCount !== undefined)
             setItemCount(itemCount + pageSize);
     }, [dataLoading, itemCount, noMoreToLoad, pageSize, paginationEnabled]);
+
 
     const resetPagination = useCallback(() => {
         setItemCount(pageSize);
@@ -259,7 +263,7 @@ export function CollectionTableInternal<M extends { [Key: string]: any },
         if (tableRowActionsBuilder)
             return tableRowActionsBuilder({ entity: entry, size });
         else
-            return <CollectionRowActions entity={entry} size={size} data={data}/>;
+            return <CollectionRowActions entity={entry} size={size} data={dataToShow}/>;
 
     }, [tableRowActionsBuilder]);
 
@@ -272,8 +276,23 @@ export function CollectionTableInternal<M extends { [Key: string]: any },
             onSizeChanged(size);
         setSize(size);
     }, []);
+    const handelPrev = () => {
+        if (page === 1) return
+        const nextPage = page - 1
+        setPage(nextPage)
+        setItemCount(nextPage * 10)
+    }
+    const handelNext = () => {
+        const nextPage = page + 1
+        setPage(nextPage)
+        setItemCount(nextPage * 10)
 
+    }
     const onTextSearch = useCallback((newSearchString) => setSearchString(newSearchString), []);
+    const onSort = () => {
+        setPage(1)
+        setItemCount(10)
+    }
     return (
 
         <Paper className={classes.root}>
@@ -288,10 +307,10 @@ export function CollectionTableInternal<M extends { [Key: string]: any },
                                     loading={dataLoading}/>
 
             <Table
-                data={data}
+                data={dataLoading ? [] : dataToShow}
                 columns={columns}
                 onRowClick={onRowClick}
-                onEndReached={loadNextPage}
+                // onEndReached={loadNextPage}
                 onResetPagination={resetPagination}
                 idColumnBuilder={buildIdColumn}
                 error={dataLoadingError}
@@ -307,7 +326,15 @@ export function CollectionTableInternal<M extends { [Key: string]: any },
                 hoverRow={hoverRow}
                 checkFilterCombination={(filterValues, sortBy) => isFilterCombinationValid(filterValues, filterCombinations, sortBy)}
                 collection={collection}
+                onSort={onSort}
             />
+            <div style={{ display: "flex", justifyContent: "center" }}>
+                <ButtonGroup disableElevation variant="contained">
+                    <Button disabled={page === 1 || dataLoading} onClick={handelPrev}><ArrowBackIosNewIcon/></Button>
+                    <Button disabled={noMoreToLoad || dataLoading} onClick={handelNext}><ArrowForwardIosIcon/></Button>
+                </ButtonGroup>
+            </div>
+
 
             {popupFormField}
 

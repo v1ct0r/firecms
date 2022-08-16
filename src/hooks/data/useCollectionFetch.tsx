@@ -51,7 +51,8 @@ export interface CollectionFetchResult<M extends { [Key: string]: any }> {
     data: Entity<M>[]
     dataLoading: boolean,
     noMoreToLoad: boolean,
-    dataLoadingError?: Error
+    dataLoadingError?: Error,
+    entitiesLength?: number
 }
 
 /**
@@ -86,6 +87,7 @@ export function useCollectionFetch<M>(
     const [dataLoading, setDataLoading] = useState<boolean>(false);
     const [dataLoadingError, setDataLoadingError] = useState<Error | undefined>();
     const [noMoreToLoad, setNoMoreToLoad] = useState<boolean>(false);
+    const [entitiesLength, setEntitiesLength] = useState<number>(0);
 
     const updateData = useCallback((entities: Entity<M>[]) => {
         if (!initialEntities) {
@@ -104,6 +106,7 @@ export function useCollectionFetch<M>(
             setDataLoading(false);
             setDataLoadingError(undefined);
             updateData(entities);
+            setEntitiesLength(entities.length)
             setNoMoreToLoad(!itemCount || entities.length < itemCount);
         };
 
@@ -149,7 +152,8 @@ export function useCollectionFetch<M>(
         data,
         dataLoading,
         dataLoadingError,
-        noMoreToLoad
+        noMoreToLoad,
+        entitiesLength
     };
 
 }
