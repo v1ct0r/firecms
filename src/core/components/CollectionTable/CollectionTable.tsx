@@ -210,7 +210,7 @@ export function CollectionTableInternal<M extends { [Key: string]: any },
         onCellValueChange: onCellChanged,
         uniqueFieldValidator
     });
-    console.log("columns", columns)
+
     columns = columns.filter(c => {
         if (c.property) {
             return !c.property.hideInTable
@@ -234,21 +234,9 @@ export function CollectionTableInternal<M extends { [Key: string]: any },
         searchString,
         itemCount
     });
-    const [disabled, setDisabled] = useState(false)
 
-    useEffect(() => {
-        setDisabled(dataLoading)
-    })
     const [page, setPage] = useState(1)
-    console.log("cccc - DATA BEFORE", data)
-    console.log("cccc - ITEM COUNT", itemCount)
-    // const dataToShow = data.splice(0, page === 1 ? 0 : ((page - 1) * 2) - 1)
     const dataToShow: Entity<any>[] = data.slice(page === 1 ? 0 : ((page - 1) * 10))
-    console.log("cccc - DATA AFTER", data)
-    // const [dataToShow, setDataToShow] = useState<Entity<M>[]>(data)
-    // console.log("dataToShowdataToShow", dataToShow)
-    console.log("cccc - PAGE", page)
-    console.log("-----------------------------------")
     const actions = useMemo(() => toolbarActionsBuilder && toolbarActionsBuilder({
         size,
         data: dataToShow
@@ -298,16 +286,13 @@ export function CollectionTableInternal<M extends { [Key: string]: any },
         const nextPage = page + 1
         setPage(nextPage)
         setItemCount(nextPage * 10)
-        // setDataToShow(data.splice(0, nextPage * 2))
-        // if (itemCount !== undefined)
-        //     setItemCount(nextPage);
+
     }
     const onTextSearch = useCallback((newSearchString) => setSearchString(newSearchString), []);
     const onSort = () => {
         setPage(1)
         setItemCount(10)
     }
-    console.log("dataToShowas", dataToShow)
     return (
 
         <Paper className={classes.root}>

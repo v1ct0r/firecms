@@ -9372,7 +9372,6 @@ function CollectionTableInternal({
     onCellValueChange: onCellChanged,
     uniqueFieldValidator
   });
-  console.log("columns", columns);
   columns = columns.filter((c) => {
     if (c.property) {
       return !c.property.hideInTable;
@@ -9395,17 +9394,8 @@ function CollectionTableInternal({
     searchString,
     itemCount
   });
-  const [disabled, setDisabled] = useState(false);
-  useEffect(() => {
-    setDisabled(dataLoading);
-  });
   const [page, setPage] = useState(1);
-  console.log("cccc - DATA BEFORE", data);
-  console.log("cccc - ITEM COUNT", itemCount);
   const dataToShow = data.slice(page === 1 ? 0 : (page - 1) * 10);
-  console.log("cccc - DATA AFTER", data);
-  console.log("cccc - PAGE", page);
-  console.log("-----------------------------------");
   const actions = useMemo(() => toolbarActionsBuilder && toolbarActionsBuilder({
     size,
     data: dataToShow
@@ -9462,7 +9452,6 @@ function CollectionTableInternal({
     setPage(1);
     setItemCount(10);
   };
-  console.log("dataToShowas", dataToShow);
   return /* @__PURE__ */ jsxs(Paper, {
     className: classes.root,
     children: [/* @__PURE__ */ jsx(CollectionTableToolbar, {
