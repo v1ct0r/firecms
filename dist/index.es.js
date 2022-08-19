@@ -4,7 +4,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import * as locales from 'date-fns/locale';
 import * as React from 'react';
 import React__default, { useState, useEffect, useRef, useCallback, useMemo, useContext, createElement, useLayoutEffect, lazy, Suspense } from 'react';
-import { Snackbar, Alert, useMediaQuery, Tooltip, Skeleton, Box, Typography, Chip, IconButton, Table as Table$1, TableBody, TableRow, TableCell as TableCell$1, Link, CardMedia, Grid, List, ListItem, Paper, lighten, darken, Divider, TableContainer, FormControl, alpha as alpha$1, useTheme, Select as Select$1, InputBase as InputBase$1, MenuItem, Hidden, CircularProgress, Checkbox, TextareaAutosize, ListItemText, Input, Switch, TextField as TextField$1, Button, FormHelperText, InputLabel, FormControlLabel, FilledInput, InputAdornment, Container, ButtonGroup, Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, Popover, CardActionArea, CardContent, CardActions, OutlinedInput, Badge, Slide, AppBar, Toolbar, Breadcrumbs, Avatar, Drawer as Drawer$1, useForkRef, debounce, ownerWindow, Modal, Backdrop, Tabs, Tab, createTheme, Fade, CssBaseline, ThemeProvider } from '@mui/material';
+import { Snackbar, Alert, useMediaQuery, Tooltip, Skeleton, Box, Typography, Chip, IconButton, Table as Table$1, TableBody, TableRow, TableCell as TableCell$1, Link, CardMedia, Grid, List, ListItem, Paper, lighten, darken, Divider, TableContainer, FormControl, alpha as alpha$1, useTheme, Hidden, CircularProgress, Checkbox, TextareaAutosize, Select as Select$1, MenuItem, ListItemText, Input, Switch, TextField as TextField$1, Button, FormHelperText, InputLabel, FormControlLabel, FilledInput, InputAdornment, Container, ButtonGroup, Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, Popover, CardActionArea, CardContent, CardActions, OutlinedInput, Badge, Slide, AppBar, Toolbar, Breadcrumbs, Avatar, Drawer as Drawer$1, useForkRef, debounce, ownerWindow, Modal, Backdrop, Tabs, Tab, createTheme, Fade, CssBaseline, ThemeProvider } from '@mui/material';
 import { jsxs, jsx, Fragment } from '@emotion/react/jsx-runtime';
 import { useLocation, useNavigate, Link as Link$1, Route, Routes, NavLink, UNSAFE_NavigationContext, BrowserRouter } from 'react-router-dom';
 import hash from 'object-hash';
@@ -50,7 +50,6 @@ import DialogContentText$1 from '@mui/material/DialogContentText';
 import DialogTitle$1 from '@mui/material/DialogTitle';
 import { pink, red } from '@mui/material/colors';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import isEqual from 'react-fast-compare';
 import * as yup from 'yup';
 import EditIcon from '@mui/icons-material/Edit';
@@ -3898,39 +3897,6 @@ function CollectionTableToolbar(props) {
       })
     })
   });
-  const sizeSelect = /* @__PURE__ */ jsx(Select$1, {
-    variant: "standard",
-    value: props.size,
-    style: {
-      width: 56
-    },
-    onChange: (evt) => {
-      props.onSizeChanged(evt.target.value);
-    },
-    MenuProps: {
-      MenuListProps: {
-        disablePadding: true,
-        style: {
-          borderRadius: 4
-        }
-      },
-      elevation: 1
-    },
-    input: /* @__PURE__ */ jsx(InputBase$1, {
-      classes: {
-        root: classes.selectRoot,
-        input: classes.input
-      }
-    }),
-    renderValue: (value) => value.toUpperCase(),
-    children: ["xs", "s", "m", "l", "xl"].map((value) => /* @__PURE__ */ jsx(MenuItem, {
-      classes: {
-        root: classes.item
-      },
-      value,
-      children: value.toUpperCase()
-    }, `size-select-${value}`))
-  });
   return /* @__PURE__ */ jsxs("div", {
     className: classes.toolbar,
     children: [/* @__PURE__ */ jsxs(Box, {
@@ -3942,7 +3908,7 @@ function CollectionTableToolbar(props) {
           mr: 2,
           children: props.title
         })
-      }), sizeSelect, filterView]
+      }), filterView]
     }), /* @__PURE__ */ jsxs("div", {
       className: classes.actions,
       children: [largeLayout && /* @__PURE__ */ jsx(Box, {
@@ -4364,14 +4330,7 @@ const TableCellInternal = ({
         top: 4,
         right: 4,
         fontSize: "14px"
-      },
-      children: /* @__PURE__ */ jsx(Tooltip, {
-        title: disabledTooltip,
-        children: /* @__PURE__ */ jsx(RemoveCircleIcon, {
-          color: "disabled",
-          fontSize: "inherit"
-        })
-      })
+      }
     }), (error || showExpandIcon) && /* @__PURE__ */ jsxs("div", {
       className: cellClasses.iconsTop,
       children: [selected && !disabled && showExpandIcon && /* @__PURE__ */ jsx(IconButton, {
@@ -9501,7 +9460,7 @@ function CollectionTableInternal({
           children: /* @__PURE__ */ jsx(ArrowForwardIosIcon, {})
         })]
       })
-    }), popupFormField]
+    })]
   });
 }
 function isFilterCombinationValid(filterValues, indexes, sortBy) {
@@ -10242,7 +10201,7 @@ function EntityCollectionView$1({
         textOverflow: "ellipsis",
         whiteSpace: "nowrap",
         overflow: "hidden",
-        maxWidth: "160px",
+        maxWidth: "fit-content",
         cursor: collection.description ? "pointer" : "inherit"
       },
       onClick: collection.description ? (e) => {
@@ -10365,7 +10324,7 @@ function EntityCollectionView$1({
       path
     });
     return /* @__PURE__ */ jsxs(Fragment, {
-      children: [extraActions, exportButton, addButton]
+      children: [extraActions, exportButton, collection.disableCreate ? /* @__PURE__ */ jsx(Fragment, {}) : addButton]
     });
   }, [usedSelectionController, path, collection, largeLayout]);
   return /* @__PURE__ */ jsxs(Fragment, {
@@ -10790,7 +10749,7 @@ const useStyles$5 = makeStyles((theme) => createStyles({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: align === "right" ? "flex-end" : align === "center" ? "center" : "flex-start"
+    justifyContent: "flex-start"
   }),
   headerTitle: ({
     align
