@@ -336,7 +336,7 @@ export function CollectionTableInternal<M extends { [Key: string]: any },
             </div>
 
 
-            {popupFormField}
+
 
 
         </Paper>

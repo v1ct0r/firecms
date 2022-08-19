@@ -47,7 +47,7 @@ export const useStyles = makeStyles<Theme, { onHover?: boolean, align?: "right" 
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: align === "right" ? "flex-end" : (align === "center" ? "center" : "flex-start")
+        justifyContent: "flex-start"
     }),
     headerTitle: ({ align }) => ({
         overflow: "hidden",
