@@ -263,10 +263,6 @@ const TableCellInternal = ({
                 right: 4,
                 fontSize: "14px"
             }}>
-                <Tooltip title={disabledTooltip}>
-                    <RemoveCircleIcon color={"disabled"}
-                                      fontSize={"inherit"}/>
-                </Tooltip>
             </div>}
 
             {(error || showExpandIcon) &&

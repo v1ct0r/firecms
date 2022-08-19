@@ -121,41 +121,6 @@ export function CollectionTableToolbar<M extends { [Key: string]: any }>(props: 
 
         </Box>;
 
-    const sizeSelect = (
-        <Select
-            variant={"standard"}
-            value={props.size}
-            style={{ width: 56 }}
-            onChange={(evt: any) => {
-                props.onSizeChanged(evt.target.value);
-            }}
-            MenuProps={{
-                MenuListProps: {
-                    disablePadding: true,
-                    style: {
-                        borderRadius: 4
-                    }
-                },
-                elevation: 1
-            }}
-            input={<InputBase classes={{
-                root: classes.selectRoot,
-                input: classes.input
-            }}/>}
-            renderValue={(value: any) => value.toUpperCase()}
-        >
-            {["xs", "s", "m", "l", "xl"].map((value) => (
-                <MenuItem
-                    classes={{
-                        root: classes.item
-                    }}
-                    key={`size-select-${value}`} value={value}>
-                    {value.toUpperCase()}
-                </MenuItem>
-            ))}
-        </Select>
-    );
-
     return (
         <div
             className={classes.toolbar}
@@ -170,7 +135,6 @@ export function CollectionTableToolbar<M extends { [Key: string]: any }>(props: 
                     </Box>
                 </Hidden>}
 
-                {sizeSelect}
 
                 {filterView}
 

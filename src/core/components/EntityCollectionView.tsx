@@ -244,7 +244,7 @@ export function EntityCollectionView<M extends { [Key: string]: any }>({
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
                     overflow: "hidden",
-                    maxWidth: "160px",
+                    maxWidth: "fit-content",
                     cursor: collection.description ? "pointer" : "inherit"
                 }}
                 onClick={collection.description
@@ -405,7 +405,7 @@ export function EntityCollectionView<M extends { [Key: string]: any }>({
             <>
                 {extraActions}
                 {exportButton}
-                {addButton}
+                {collection.disableCreate ? <></> : addButton}
             </>
         );
     }, [usedSelectionController, path, collection, largeLayout]);
