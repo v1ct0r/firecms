@@ -405,7 +405,7 @@ export function EntityCollectionView<M extends { [Key: string]: any }>({
             <>
                 {extraActions}
                 {exportButton}
-                {addButton}
+                {collection.disableCreate ? <></> : addButton}
             </>
         );
     }, [usedSelectionController, path, collection, largeLayout]);

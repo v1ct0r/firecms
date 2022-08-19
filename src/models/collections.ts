@@ -164,6 +164,11 @@ export interface EntityCollection<M extends { [Key: string]: any } = any,
      * Hide entity in table
      */
     hideInTable?: boolean;
+
+    /**
+     * Hide create button
+     */
+    disableCreate?: boolean
 }
 
 /**
