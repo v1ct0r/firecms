@@ -4168,11 +4168,7 @@ const useCellStyles = makeStyles((theme) => createStyles({
   error: {
     border: `2px solid ${theme.palette.error.light} !important`
   },
-  selected: {
-    backgroundColor: theme.palette.mode === "dark" ? theme.palette.background.paper : theme.palette.background.default,
-    border: "2px solid #5E9ED6",
-    transition: "border-color 300ms ease-in-out"
-  },
+  selected: {},
   saved: {
     border: `2px solid ${theme.palette.success.light}`
   },
@@ -4314,7 +4310,6 @@ const TableCellInternal = ({
       [cellClasses.centered]: disabled || !isOverflowing,
       [cellClasses.error]: error,
       [cellClasses.saved]: selected && internalSaved,
-      [cellClasses.selected]: !error && (selected || focused),
       [cellClasses.fullHeight]: fullHeight
     }),
     children: [/* @__PURE__ */ jsx("div", {

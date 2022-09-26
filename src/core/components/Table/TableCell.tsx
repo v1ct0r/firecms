@@ -59,11 +59,7 @@ export const useCellStyles = makeStyles<Theme, CellStyleProps & { disabled: bool
         error: {
             border: `2px solid ${theme.palette.error.light} !important`
         },
-        selected: {
-            backgroundColor: theme.palette.mode === "dark" ? theme.palette.background.paper : theme.palette.background.default,
-            border: "2px solid #5E9ED6",
-            transition: "border-color 300ms ease-in-out"
-        },
+        selected: {},
         saved: {
             border: `2px solid ${theme.palette.success.light}`
         },
@@ -120,22 +116,22 @@ interface TableCellProps {
 }
 
 const TableCellInternal = ({
-                                     children,
-                                     selected,
-                                     focused,
-                                     disabled,
-                                     disabledTooltip,
-                                     size,
-                                     saved,
-                                     error,
-                                     align,
-                                     allowScroll,
-                                     openPopup,
-                                     removePadding,
-                                     fullHeight,
-                                     select,
-                                     showExpandIcon = true
-                                 }: TableCellProps & CellStyleProps) => {
+                               children,
+                               selected,
+                               focused,
+                               disabled,
+                               disabledTooltip,
+                               size,
+                               saved,
+                               error,
+                               align,
+                               allowScroll,
+                               openPopup,
+                               removePadding,
+                               fullHeight,
+                               select,
+                               showExpandIcon = true
+                           }: TableCellProps & CellStyleProps) => {
 
     const ref = React.createRef<HTMLDivElement>();
 
@@ -244,7 +240,6 @@ const TableCellInternal = ({
                     [cellClasses.centered]: disabled || !isOverflowing,
                     [cellClasses.error]: error,
                     [cellClasses.saved]: selected && internalSaved,
-                    [cellClasses.selected]: !error && (selected || focused),
                     [cellClasses.fullHeight]: fullHeight
                 })}>
 
@@ -257,34 +252,34 @@ const TableCellInternal = ({
             </div>
 
             {disabled && onHover && disabledTooltip &&
-            <div style={{
-                position: "absolute",
-                top: 4,
-                right: 4,
-                fontSize: "14px"
-            }}>
-            </div>}
+                <div style={{
+                    position: "absolute",
+                    top: 4,
+                    right: 4,
+                    fontSize: "14px"
+                }}>
+                </div>}
 
             {(error || showExpandIcon) &&
-            <div className={cellClasses.iconsTop}>
+                <div className={cellClasses.iconsTop}>
 
-                {error && <Tooltip
-                    classes={{
-                        arrow: cellClasses.arrow,
-                        tooltip: cellClasses.tooltip
-                    }}
-                    arrow
-                    placement={"left"}
-                    title={error.message}>
-                    <ErrorOutlineIcon
-                        fontSize={"inherit"}
-                        color={"error"}
-                    />
-                </Tooltip>
-                }
+                    {error && <Tooltip
+                        classes={{
+                            arrow: cellClasses.arrow,
+                            tooltip: cellClasses.tooltip
+                        }}
+                        arrow
+                        placement={"left"}
+                        title={error.message}>
+                        <ErrorOutlineIcon
+                            fontSize={"inherit"}
+                            color={"error"}
+                        />
+                    </Tooltip>
+                    }
 
 
-            </div>
+                </div>
             }
 
         </div>
