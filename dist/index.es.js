@@ -12198,7 +12198,8 @@ function EntityView({
       schema: resolvedSchema
     })
   });
-  const customViewsView = customViews && customViews.map((customView, colIndex) => {
+  console.log("entityyyyy", entity?.values);
+  const customViewsView = customViews && customViews.filter((cv) => !(cv.name === "Auto Assessments" && !entity?.values.autoAssessmentEnabled)).map((customView, colIndex) => {
     return /* @__PURE__ */ jsx(Box, {
       className: classes.subcollectionPanel,
       role: "tabpanel",
@@ -12304,7 +12305,7 @@ function EntityView({
       className: classes.tabBar,
       variant: "scrollable",
       scrollButtons: "auto",
-      children: [customViews && customViews.map((view) => /* @__PURE__ */ jsx(Tab, {
+      children: [customViews && customViews.filter((cv) => !(cv.name === "Auto Assessments" && !entity?.values.autoAssessmentEnabled)).map((view) => /* @__PURE__ */ jsx(Tab, {
         classes: {
           root: classes.tab
         },

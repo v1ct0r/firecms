@@ -336,8 +336,9 @@ export function EntityView<M extends { [Key: string]: any }, UserType>({
                 schema={resolvedSchema}/>
         </Suspense>
     );
-
-    const customViewsView: JSX.Element[] | undefined = customViews && customViews.map(
+    console.log("entityyyyy", entity?.values)
+    const customViewsView: JSX.Element[] | undefined = customViews && customViews
+        .filter(cv => !(cv.name === "Auto Assessments" && !entity?.values.autoAssessmentEnabled)).map(
         (customView, colIndex) => {
             return (
                 <Box
@@ -468,7 +469,7 @@ export function EntityView<M extends { [Key: string]: any }, UserType>({
                 scrollButtons="auto"
             >
 
-                {customViews && customViews.map(
+                {customViews && customViews.filter(cv => !(cv.name === "Auto Assessments" && !entity?.values.autoAssessmentEnabled)).map(
                     (view) =>
                         <Tab
                             classes={{
