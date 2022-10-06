@@ -170,6 +170,7 @@ export type EntityCustomView<M = any> =
     {
         path: string,
         name: string,
+        hidden?: boolean,
         builder: (extraActionsParams: EntityCustomViewParams<M>) => React.ReactNode
     }
 

@@ -135,6 +135,7 @@ export declare type InferSchemaType<S extends EntitySchema> = S extends EntitySc
 export declare type EntityCustomView<M = any> = {
     path: string;
     name: string;
+    hidden?: boolean;
     builder: (extraActionsParams: EntityCustomViewParams<M>) => React.ReactNode;
 };
 /**
