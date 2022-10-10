@@ -350,7 +350,15 @@ function FormInternal<M>({
     handleSubmit: any,
     savingError: any
 }) {
-    const modified = useMemo(() => !isEqual(baseDataSourceValues, values), [baseDataSourceValues, values]);
+    const copyBaseDataSourceValues = baseDataSourceValues
+    const copyValues = values
+    if ((copyBaseDataSourceValues as any).userType !== undefined &&
+        (copyValues as any).userType !== undefined) {
+        if ((copyBaseDataSourceValues as any).userType !== (copyValues as any).userType) {
+            (copyValues as any).userType = (copyBaseDataSourceValues as any).userType
+        }
+    }
+    const modified = useMemo(() => !isEqual(copyBaseDataSourceValues, copyValues), [copyBaseDataSourceValues, copyValues]);
     useEffect(() => {
         if (onModified)
             onModified(modified);
@@ -439,11 +447,11 @@ function FormInternal<M>({
                 <div className={classes.stickyButtons}>
 
                     {savingError &&
-                    <Box textAlign="right">
-                        <Typography color={"error"}>
-                            {savingError.message}
-                        </Typography>
-                    </Box>}
+                        <Box textAlign="right">
+                            <Typography color={"error"}>
+                                {savingError.message}
+                            </Typography>
+                        </Box>}
 
                     {buildButtons(classes, isSubmitting, modified, status)}
 
@@ -464,15 +472,15 @@ function buildButtons(classes: any, isSubmitting: boolean, modified: boolean, st
         <Box textAlign="right">
 
             {status === "existing" &&
-            <Button
-                variant="text"
-                color="primary"
-                disabled={disabled}
-                className={classes.button}
-                type="reset"
-            >
-                Discard
-            </Button>}
+                <Button
+                    variant="text"
+                    color="primary"
+                    disabled={disabled}
+                    className={classes.button}
+                    type="reset"
+                >
+                    Discard
+                </Button>}
 
             <Button
                 variant="contained"
