@@ -8452,14 +8452,7 @@ function FormInternal({
   handleSubmit,
   savingError
 }) {
-  const copyBaseDataSourceValues = baseDataSourceValues;
-  const copyValues = values;
-  if (copyBaseDataSourceValues.userType !== void 0 && copyValues.userType !== void 0) {
-    if (copyBaseDataSourceValues.userType !== copyValues.userType) {
-      copyValues.userType = copyBaseDataSourceValues.userType;
-    }
-  }
-  const modified = useMemo(() => !isEqual(copyBaseDataSourceValues, copyValues), [copyBaseDataSourceValues, copyValues]);
+  const modified = useMemo(() => !isEqual(baseDataSourceValues, values), [baseDataSourceValues, values]);
   useEffect(() => {
     if (onModified)
       onModified(modified);
