@@ -350,15 +350,7 @@ function FormInternal<M>({
     handleSubmit: any,
     savingError: any
 }) {
-    const copyBaseDataSourceValues = baseDataSourceValues
-    const copyValues = values
-    if ((copyBaseDataSourceValues as any).userType !== undefined &&
-        (copyValues as any).userType !== undefined) {
-        if ((copyBaseDataSourceValues as any).userType !== (copyValues as any).userType) {
-            (copyValues as any).userType = (copyBaseDataSourceValues as any).userType
-        }
-    }
-    const modified = useMemo(() => !isEqual(copyBaseDataSourceValues, copyValues), [copyBaseDataSourceValues, copyValues]);
+    const modified = useMemo(() => !isEqual(baseDataSourceValues, values), [baseDataSourceValues, values]);
     useEffect(() => {
         if (onModified)
             onModified(modified);
