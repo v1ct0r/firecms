@@ -349,6 +349,7 @@ export function Table<T>({
 
                             {tableSize?.bounds &&
                                 <BaseTable
+                                    className={collection.hideSelectAndOpen ? "disableSelection" : ""}
                                     rowClassName={clsx(classes.tableRow, { [classes.tableRowClickable]: hoverRow })}
                                     data={data}
                                     onColumnResizeEnd={onBaseTableColumnResize}

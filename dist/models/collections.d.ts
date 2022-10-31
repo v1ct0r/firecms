@@ -143,6 +143,7 @@ export interface EntityCollection<M extends {
      * Hide create button
      */
     disableCreate?: boolean;
+    hideSelectAndOpen?: boolean;
 }
 /**
  * Sizes in which a collection can be rendered

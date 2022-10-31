@@ -31,7 +31,8 @@ export const useStyles = makeStyles((theme: Theme) =>
             display: "flex",
             flexDirection: "column",
             alignItems: "flex-start",
-            minHeight: 248
+            minHeight: 150,
+            maxHeight: 150
         },
         flexGrow: {
             flexGrow: 1
@@ -69,7 +70,7 @@ export function FireCMSHomePage() {
                   sm={6}
                   md={4}
                   key={`nav_${entry.group}_${entry.name}`}>
-                <Paper variant={"outlined"}>
+                <Paper className={"home_card"} variant={"outlined"}>
 
                     <CardActionArea
                         className={classes.card}
