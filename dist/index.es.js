@@ -10357,7 +10357,8 @@ const useStyles$7 = makeStyles((theme) => createStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
-    minHeight: 248
+    minHeight: 150,
+    maxHeight: 150
   },
   flexGrow: {
     flexGrow: 1
@@ -10383,6 +10384,7 @@ function FireCMSHomePage() {
       sm: 6,
       md: 4,
       children: /* @__PURE__ */ jsx(Paper, {
+        className: "home_card",
         variant: "outlined",
         children: /* @__PURE__ */ jsxs(CardActionArea, {
           className: classes.card,
@@ -11208,6 +11210,7 @@ function Table({
           className: classes.tableContainer,
           css: baseTableCss,
           children: tableSize?.bounds && /* @__PURE__ */ jsxs(BaseTable, {
+            className: collection.hideSelectAndOpen ? "disableSelection" : "",
             rowClassName: clsx(classes.tableRow, {
               [classes.tableRowClickable]: hoverRow
             }),

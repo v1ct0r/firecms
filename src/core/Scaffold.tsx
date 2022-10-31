@@ -86,7 +86,6 @@ export function Scaffold(props: PropsWithChildren<ScaffoldProps>) {
     const closeDrawer = () => setDrawerOpen(false);
 
     const UsedDrawer = Drawer || FireCMSDrawer;
-
     return (
 
         <>
