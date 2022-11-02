@@ -119,7 +119,7 @@ export function Table<T>({
                 column.property.dataType === "string" ||
                 column.property.dataType === "timestamp")
         ) {
-            return `${classes.column} ${classes.alignText} alignText`
+            return `${classes.column} ${classes.alignText} alignText ${column.key === "edasReply" ? "edas-reply-column" : ""}`
         } else return classes.column
     }
     useEffect(() => {
