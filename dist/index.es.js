@@ -11019,7 +11019,7 @@ function Table({
     if (!column.property)
       return classes.column;
     if (!column.property.disableCustomStyles && (column.property.dataType === "number" || column.property.dataType === "string" || column.property.dataType === "timestamp")) {
-      return `${classes.column} ${classes.alignText} alignText`;
+      return `${classes.column} ${classes.alignText} alignText ${column.key === "edasReply" ? "edas-reply-column" : ""}`;
     } else
       return classes.column;
   };
@@ -11249,8 +11249,12 @@ function Table({
                 rowData
               }) => {
                 const currentColumn = data?.filter((d) => d.id === rowData.id)[0];
+                console.log("column.keycolumn.key", {
+                  "column.key": column.key,
+                  column
+                });
                 if (currentColumn.values.archived) {
-                  return `${getClass(column)} archived-row`;
+                  return `${getClass(column)} archived-row}`;
                 } else {
                   return getClass(column);
                 }
